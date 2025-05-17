@@ -36,7 +36,7 @@
             // 
             // tsipr
             // 
-            tsipr.Location = new Point(352, 194);
+            tsipr.Location = new Point(186, 124);
             tsipr.Name = "tsipr";
             tsipr.Size = new Size(171, 27);
             tsipr.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             useg2.FormattingEnabled = true;
             useg2.Items.AddRange(new object[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" });
-            useg2.Location = new Point(309, 193);
+            useg2.Location = new Point(143, 123);
             useg2.Name = "useg2";
             useg2.Size = new Size(37, 28);
             useg2.TabIndex = 1;
@@ -55,7 +55,7 @@
             // 
             useg1.FormattingEnabled = true;
             useg1.Items.AddRange(new object[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" });
-            useg1.Location = new Point(264, 193);
+            useg1.Location = new Point(98, 123);
             useg1.Name = "useg1";
             useg1.Size = new Size(39, 28);
             useg1.TabIndex = 2;
@@ -63,12 +63,13 @@
             // 
             // newtreh
             // 
-            newtreh.Location = new Point(291, 236);
+            newtreh.Location = new Point(127, 179);
             newtreh.Name = "newtreh";
             newtreh.Size = new Size(190, 45);
             newtreh.TabIndex = 3;
             newtreh.Text = "Нэвтрэх";
             newtreh.UseVisualStyleBackColor = true;
+            newtreh.Click += newtreh_Click;
             // 
             // burtgeh
             // 

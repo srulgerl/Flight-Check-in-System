@@ -21,5 +21,42 @@ namespace Forms
         {
 
         }
+
+        private void mor1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void appbar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void suudalback_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var info = new info();
+            info.Show();
+
+        }
     }
 }

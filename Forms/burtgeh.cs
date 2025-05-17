@@ -29,6 +29,11 @@ namespace Forms
 
         private void burtgeh_Load(object sender, EventArgs e)
         {
+            
+        }
+
+        private void newtreh_Click(object sender, EventArgs e)
+        {
             var suudalSongoh = new suudal_songoh();
             suudalSongoh.Show();
         }
