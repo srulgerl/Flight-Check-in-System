@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace WinForms.Forms
 {
-    public partial class BoardingPassForm: Form
+    public partial class BoardingPassForm : Form
     {
         public BoardingPassForm()
         {
             InitializeComponent();
+        }
+
+        private void BoardingPassForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
