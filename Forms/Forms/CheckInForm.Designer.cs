@@ -193,6 +193,7 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(125, 27);
             textBox2.TabIndex = 12;
+            textBox2.TextChanged += textBox2_TextChanged;
             // 
             // btnPasswordSearch
             // 
@@ -202,6 +203,7 @@
             btnPasswordSearch.TabIndex = 13;
             btnPasswordSearch.Text = "Хайх";
             btnPasswordSearch.UseVisualStyleBackColor = true;
+            btnPasswordSearch.Click += btnPasswordSearch_Click;
             // 
             // btnSeatA1
             // 
@@ -501,6 +503,7 @@
             HereglegchiinMedeelelHaruulah.RowHeadersWidth = 51;
             HereglegchiinMedeelelHaruulah.Size = new Size(307, 175);
             HereglegchiinMedeelelHaruulah.TabIndex = 49;
+            HereglegchiinMedeelelHaruulah.CellContentClick += HereglegchiinMedeelelHaruulah_CellContentClick;
             // 
             // lblUserInfo
             // 
@@ -570,6 +573,7 @@
             btnPrint.TabIndex = 56;
             btnPrint.Text = "Тасалбар хэвлэх";
             btnPrint.UseVisualStyleBackColor = false;
+            btnPrint.Click += btnPrint_Click;
             // 
             // CheckInForm
             // 

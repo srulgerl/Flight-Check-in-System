@@ -7,12 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.Data.SqlClient; 
+using System.Configuration;
+using Data.Models;
+
 
 namespace WinForms.Forms
 {
     public partial class CheckInForm : Form
     {
+
+        //boarding pass hevlegch
+        private PrintPreviewDialog printPreviewDialog1;
+        private PrintDocument printDocument1;
+
+        private string passengerName;
+        private string flightNumber;
+        private string seatNumber;
+
         public CheckInForm()
         {
             InitializeComponent();
@@ -70,6 +84,104 @@ namespace WinForms.Forms
 
             // Өнгө өөрчлөх
             clickedSeat.BackColor = Color.Red;
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            // Example: get bookingId from user selection or input
+            int bookingId = 1; // Replace with actual logic
+            LoadBoardingPassData(bookingId);
+
+            printDocument1 = new PrintDocument();
+            printDocument1.PrintPage += printDocument1_PrintPage;
+
+            printPreviewDialog1 = new PrintPreviewDialog();
+            printPreviewDialog1.Document = printDocument1;
+            printPreviewDialog1.ShowDialog();
+        }
+        private void LoadBoardingPassData(int bookingId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["Flights"].ConnectionString;
+            string query = "SELECT PassengerName, FlightNumber, SeatNumber FROM Bookings WHERE BookingId = @BookingId";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@BookingId", bookingId);
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        passengerName = reader["PassengerName"].ToString();
+                        flightNumber = reader["FlightNumber"].ToString();
+                        seatNumber = reader["SeatNumber"].ToString();
+                    }
+                }
+            }
+        }
+        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font font = new Font("Arial", 16);
+            float y = 100;
+            e.Graphics.DrawString("Boarding Pass", font, Brushes.Black, 100, y);
+            y += 40;
+            e.Graphics.DrawString($"Name: {passengerName}", font, Brushes.Black, 100, y);
+            y += 30;
+            e.Graphics.DrawString($"Flight: {flightNumber}", font, Brushes.Black, 100, y);
+            y += 30;
+            e.Graphics.DrawString($"Seat: {seatNumber}", font, Brushes.Black, 100, y);
+        }
+
+        
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            string passportNumber = textBox2.Text.Trim();
+            if (!string.IsNullOrEmpty(passportNumber))
+            {
+                SearchUserByPassport(passportNumber);
+            }
+            else
+            {
+                HereglegchiinMedeelelHaruulah.DataSource = null;
+            }
+
+        }
+
+        private void btnPasswordSearch_Click(object sender, EventArgs e)
+        {
+            string passportNumber = textBox2.Text.Trim();
+            if (!string.IsNullOrEmpty(passportNumber))
+            {
+                SearchUserByPassport(passportNumber);
+            }
+            else
+            {
+                MessageBox.Show("Паспортын дугаараа оруулна уу.");
+            }
+        }
+        private void HereglegchiinMedeelelHaruulah_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        private void SearchUserByPassport(string passportNumber)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["FlightCheckinDb"].ConnectionString;
+            string query = "SELECT * FROM Users WHERE PassportNumber = @PassportNumber";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@PassportNumber", passportNumber);
+                conn.Open();
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    HereglegchiinMedeelelHaruulah.DataSource = dt;
+                }
+            }
         }
     }
 }
