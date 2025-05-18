@@ -1,0 +1,37 @@
+﻿using Data.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Server.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PassengersContoller: ControllerBase
+    {
+        private readonly IPassengerRepository _repo;
+        public PassengersContoller(IPassengerRepository repo)
+        {
+            _repo = repo;
+        }
+
+        [HttpGet("by-passport/{passportNumber}")]
+        public async Task<IActionResult> GetByPassport(string passportNumber)
+        {
+            var passenger = await _repo.GetPassengerByPassportAsync(passportNumber);
+            if (passenger == null) return NotFound();
+            return Ok(passenger);
+        }
+        [HttpGet("by-flight/{flightId}")]
+        public async Task<IActionResult> GetByFlight(string flightId)
+        {
+            var passengers = await _repo.GetPassengersByFlghtIdAsync(flightId);
+            if (passengers == null || !passengers.Any()) return NotFound();
+            return Ok(passengers);
+        }
+
+    }
+}
