@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services.BusinessLogic
 {
-    class CheckInService : ICheckInService
+    public class CheckInService : ICheckInService
     {
         private readonly IPassengerRepository _passengerRepository;
         private readonly ISeatRepository _seatRepository;

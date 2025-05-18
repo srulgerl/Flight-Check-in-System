@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
-    class SeatRepository : AbsRepository, ISeatRepository
+    public class SeatRepository : AbsRepository, ISeatRepository
     {
         public SeatRepository(string connectionString) : base(connectionString)
         {
