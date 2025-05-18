@@ -53,9 +53,23 @@ namespace WinForms.Forms
 
         }
 
-        private void seats_Click(object sender, EventArgs e)
+        private void LabelSeatsLoc_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSeatA1_Click(object sender, EventArgs e)
+        {
+            Button clickedSeat = sender as Button;
+
+            if (clickedSeat.BackColor == Color.Red)
+            {
+                MessageBox.Show("Энэ суудал аль хэдийн захиалагдсан байна.");
+                return;
+            }
+
+            // Өнгө өөрчлөх
+            clickedSeat.BackColor = Color.Red;
         }
     }
 }

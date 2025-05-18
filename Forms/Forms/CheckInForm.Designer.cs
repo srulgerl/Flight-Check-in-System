@@ -41,7 +41,7 @@
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             btnPasswordSearch = new Button();
-            button6 = new Button();
+            btnSeatA1 = new Button();
             BtnSeatC1 = new Button();
             BtnSeatB2 = new Button();
             BtnSeatA2 = new Button();
@@ -65,11 +65,22 @@
             BtnSeatC5 = new Button();
             BtnSeatD5 = new Button();
             BtnSeatD6 = new Button();
-            seats = new Label();
+            LabelSeatsLoc = new Label();
             lblbusinessSeats = new Label();
             lblEngiinSeats = new Label();
             lblSuudalBatlah = new Label();
             label2 = new Label();
+            btnSuudalConfirm = new Button();
+            HereglegchiinMedeelelHaruulah = new DataGridView();
+            lblUserInfo = new Label();
+            dataGridView1 = new DataGridView();
+            btnSuudalCancel = new Button();
+            label3 = new Label();
+            comboBox1 = new ComboBox();
+            btnChangeTolow = new Button();
+            btnPrint = new Button();
+            ((System.ComponentModel.ISupportInitialize)HereglegchiinMedeelelHaruulah).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // appbar
@@ -77,7 +88,7 @@
             appbar.BackColor = SystemColors.ControlLight;
             appbar.Location = new Point(0, -2);
             appbar.Name = "appbar";
-            appbar.Size = new Size(914, 81);
+            appbar.Size = new Size(1005, 81);
             appbar.TabIndex = 0;
             appbar.Click += appbar_Click;
             // 
@@ -155,9 +166,9 @@
             // labelBG4
             // 
             labelBG4.BackColor = SystemColors.ControlLight;
-            labelBG4.Location = new Point(683, 89);
+            labelBG4.Location = new Point(721, 89);
             labelBG4.Name = "labelBG4";
-            labelBG4.Size = new Size(231, 302);
+            labelBG4.Size = new Size(284, 302);
             labelBG4.TabIndex = 9;
             // 
             // labelback3
@@ -165,7 +176,7 @@
             labelback3.BackColor = SystemColors.ControlLight;
             labelback3.Location = new Point(313, 89);
             labelback3.Name = "labelback3";
-            labelback3.Size = new Size(364, 378);
+            labelback3.Size = new Size(402, 487);
             labelback3.TabIndex = 10;
             labelback3.Click += label3_Click;
             // 
@@ -192,14 +203,15 @@
             btnPasswordSearch.Text = "Хайх";
             btnPasswordSearch.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btnSeatA1
             // 
-            button6.Location = new Point(410, 146);
-            button6.Name = "button6";
-            button6.Size = new Size(37, 29);
-            button6.TabIndex = 19;
-            button6.Text = "A1";
-            button6.UseVisualStyleBackColor = true;
+            btnSeatA1.Location = new Point(410, 146);
+            btnSeatA1.Name = "btnSeatA1";
+            btnSeatA1.Size = new Size(37, 29);
+            btnSeatA1.TabIndex = 19;
+            btnSeatA1.Text = "A1";
+            btnSeatA1.UseVisualStyleBackColor = true;
+            btnSeatA1.Click += btnSeatA1_Click;
             // 
             // BtnSeatC1
             // 
@@ -218,6 +230,7 @@
             BtnSeatB2.TabIndex = 21;
             BtnSeatB2.Text = "B2";
             BtnSeatB2.UseVisualStyleBackColor = true;
+            BtnSeatB2.Click += btnSeatA1_Click;
             // 
             // BtnSeatA2
             // 
@@ -227,6 +240,7 @@
             BtnSeatA2.TabIndex = 22;
             BtnSeatA2.Text = "A2";
             BtnSeatA2.UseVisualStyleBackColor = true;
+            BtnSeatA2.Click += btnSeatA1_Click;
             // 
             // BtnSeatB1
             // 
@@ -236,6 +250,7 @@
             BtnSeatB1.TabIndex = 23;
             BtnSeatB1.Text = "B1";
             BtnSeatB1.UseVisualStyleBackColor = true;
+            BtnSeatB1.Click += btnSeatA1_Click;
             // 
             // BtnSeatB4
             // 
@@ -245,6 +260,7 @@
             BtnSeatB4.TabIndex = 24;
             BtnSeatB4.Text = "B4";
             BtnSeatB4.UseVisualStyleBackColor = true;
+            BtnSeatB4.Click += btnSeatA1_Click;
             // 
             // BtnSeatA4
             // 
@@ -254,6 +270,7 @@
             BtnSeatA4.TabIndex = 25;
             BtnSeatA4.Text = "A4";
             BtnSeatA4.UseVisualStyleBackColor = true;
+            BtnSeatA4.Click += btnSeatA1_Click;
             // 
             // BtnSeatB3
             // 
@@ -263,6 +280,7 @@
             BtnSeatB3.TabIndex = 26;
             BtnSeatB3.Text = "B3";
             BtnSeatB3.UseVisualStyleBackColor = true;
+            BtnSeatB3.Click += btnSeatA1_Click;
             // 
             // BtnSeatA3
             // 
@@ -272,6 +290,7 @@
             BtnSeatA3.TabIndex = 27;
             BtnSeatA3.Text = "A3";
             BtnSeatA3.UseVisualStyleBackColor = true;
+            BtnSeatA3.Click += btnSeatA1_Click;
             // 
             // BtnSeatD2
             // 
@@ -308,6 +327,7 @@
             BtnSeatB6.TabIndex = 31;
             BtnSeatB6.Text = "B6";
             BtnSeatB6.UseVisualStyleBackColor = true;
+            BtnSeatB6.Click += btnSeatA1_Click;
             // 
             // BtnSeatA6
             // 
@@ -317,6 +337,7 @@
             BtnSeatA6.TabIndex = 32;
             BtnSeatA6.Text = "A6";
             BtnSeatA6.UseVisualStyleBackColor = true;
+            BtnSeatA6.Click += btnSeatA1_Click;
             // 
             // BtnSeatB5
             // 
@@ -326,6 +347,7 @@
             BtnSeatB5.TabIndex = 33;
             BtnSeatB5.Text = "B5";
             BtnSeatB5.UseVisualStyleBackColor = true;
+            BtnSeatB5.Click += btnSeatA1_Click;
             // 
             // BtnSeatA5
             // 
@@ -335,6 +357,7 @@
             BtnSeatA5.TabIndex = 34;
             BtnSeatA5.Text = "A5";
             BtnSeatA5.UseVisualStyleBackColor = true;
+            BtnSeatA5.Click += btnSeatA1_Click;
             // 
             // BtnSeatC4
             // 
@@ -408,17 +431,17 @@
             BtnSeatD6.Text = "D6";
             BtnSeatD6.UseVisualStyleBackColor = true;
             // 
-            // seats
+            // LabelSeatsLoc
             // 
-            seats.AutoSize = true;
-            seats.BackColor = SystemColors.ControlLight;
-            seats.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            seats.Location = new Point(431, 89);
-            seats.Name = "seats";
-            seats.Size = new Size(142, 20);
-            seats.TabIndex = 43;
-            seats.Text = "Суудлын байршил";
-            seats.Click += seats_Click;
+            LabelSeatsLoc.AutoSize = true;
+            LabelSeatsLoc.BackColor = SystemColors.ControlLight;
+            LabelSeatsLoc.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            LabelSeatsLoc.Location = new Point(431, 89);
+            LabelSeatsLoc.Name = "LabelSeatsLoc";
+            LabelSeatsLoc.Size = new Size(142, 20);
+            LabelSeatsLoc.TabIndex = 43;
+            LabelSeatsLoc.Text = "Суудлын байршил";
+            LabelSeatsLoc.Click += LabelSeatsLoc_Click;
             // 
             // lblbusinessSeats
             // 
@@ -447,7 +470,7 @@
             lblSuudalBatlah.AutoSize = true;
             lblSuudalBatlah.BackColor = SystemColors.ControlLight;
             lblSuudalBatlah.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblSuudalBatlah.Location = new Point(706, 89);
+            lblSuudalBatlah.Location = new Point(783, 89);
             lblSuudalBatlah.Name = "lblSuudalBatlah";
             lblSuudalBatlah.Size = new Size(179, 20);
             lblSuudalBatlah.TabIndex = 46;
@@ -460,15 +483,112 @@
             label2.Size = new Size(280, 313);
             label2.TabIndex = 47;
             // 
+            // btnSuudalConfirm
+            // 
+            btnSuudalConfirm.BackColor = SystemColors.InactiveCaption;
+            btnSuudalConfirm.Location = new Point(736, 348);
+            btnSuudalConfirm.Name = "btnSuudalConfirm";
+            btnSuudalConfirm.Size = new Size(134, 29);
+            btnSuudalConfirm.TabIndex = 48;
+            btnSuudalConfirm.Text = "Баталгаажуулах";
+            btnSuudalConfirm.UseVisualStyleBackColor = false;
+            // 
+            // HereglegchiinMedeelelHaruulah
+            // 
+            HereglegchiinMedeelelHaruulah.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            HereglegchiinMedeelelHaruulah.Location = new Point(0, 202);
+            HereglegchiinMedeelelHaruulah.Name = "HereglegchiinMedeelelHaruulah";
+            HereglegchiinMedeelelHaruulah.RowHeadersWidth = 51;
+            HereglegchiinMedeelelHaruulah.Size = new Size(307, 175);
+            HereglegchiinMedeelelHaruulah.TabIndex = 49;
+            // 
+            // lblUserInfo
+            // 
+            lblUserInfo.AutoSize = true;
+            lblUserInfo.BackColor = SystemColors.ControlLight;
+            lblUserInfo.Location = new Point(0, 178);
+            lblUserInfo.Name = "lblUserInfo";
+            lblUserInfo.Size = new Size(160, 20);
+            lblUserInfo.TabIndex = 50;
+            lblUserInfo.Text = "Зорчигчийн мэдээлэл";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(736, 123);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.Size = new Size(254, 211);
+            dataGridView1.TabIndex = 51;
+            // 
+            // btnSuudalCancel
+            // 
+            btnSuudalCancel.BackColor = SystemColors.InactiveCaption;
+            btnSuudalCancel.Location = new Point(891, 348);
+            btnSuudalCancel.Name = "btnSuudalCancel";
+            btnSuudalCancel.Size = new Size(99, 29);
+            btnSuudalCancel.TabIndex = 52;
+            btnSuudalCancel.Text = "Цуцлах";
+            btnSuudalCancel.UseVisualStyleBackColor = false;
+            // 
+            // label3
+            // 
+            label3.BackColor = SystemColors.ControlLight;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(721, 397);
+            label3.Name = "label3";
+            label3.Size = new Size(284, 91);
+            label3.TabIndex = 53;
+            label3.Text = "   Нислэгийн төлөв";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "Бүртгэж байна", "Онгоцонд сууж байна", "Ниссэн", "Хойшилсон", "Цуцалсан" });
+            comboBox1.Location = new Point(736, 430);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(151, 28);
+            comboBox1.TabIndex = 54;
+            // 
+            // btnChangeTolow
+            // 
+            btnChangeTolow.Location = new Point(893, 430);
+            btnChangeTolow.Name = "btnChangeTolow";
+            btnChangeTolow.Size = new Size(94, 29);
+            btnChangeTolow.TabIndex = 55;
+            btnChangeTolow.Text = "Солих";
+            btnChangeTolow.UseVisualStyleBackColor = true;
+            // 
+            // btnPrint
+            // 
+            btnPrint.BackColor = SystemColors.ActiveCaptionText;
+            btnPrint.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPrint.ForeColor = SystemColors.ControlLightLight;
+            btnPrint.Location = new Point(736, 500);
+            btnPrint.Name = "btnPrint";
+            btnPrint.Size = new Size(251, 76);
+            btnPrint.TabIndex = 56;
+            btnPrint.Text = "Тасалбар хэвлэх";
+            btnPrint.UseVisualStyleBackColor = false;
+            // 
             // CheckInForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(911, 569);
+            ClientSize = new Size(1002, 648);
+            Controls.Add(btnPrint);
+            Controls.Add(btnChangeTolow);
+            Controls.Add(comboBox1);
+            Controls.Add(label3);
+            Controls.Add(btnSuudalCancel);
+            Controls.Add(dataGridView1);
+            Controls.Add(lblUserInfo);
+            Controls.Add(HereglegchiinMedeelelHaruulah);
+            Controls.Add(btnSuudalConfirm);
             Controls.Add(lblSuudalBatlah);
             Controls.Add(lblEngiinSeats);
             Controls.Add(lblbusinessSeats);
-            Controls.Add(seats);
+            Controls.Add(LabelSeatsLoc);
             Controls.Add(BtnSeatD6);
             Controls.Add(BtnSeatD5);
             Controls.Add(BtnSeatC5);
@@ -492,7 +612,7 @@
             Controls.Add(BtnSeatA2);
             Controls.Add(BtnSeatB2);
             Controls.Add(BtnSeatC1);
-            Controls.Add(button6);
+            Controls.Add(btnSeatA1);
             Controls.Add(btnPasswordSearch);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
@@ -510,6 +630,8 @@
             Name = "CheckInForm";
             Text = "CheckInForm";
             Load += CheckInForm_Load;
+            ((System.ComponentModel.ISupportInitialize)HereglegchiinMedeelelHaruulah).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -529,7 +651,7 @@
         private TextBox textBox1;
         private TextBox textBox2;
         private Button btnPasswordSearch;
-        private Button button6;
+        private Button btnSeatA1;
         private Button BtnSeatC1;
         private Button BtnSeatB2;
         private Button BtnSeatA2;
@@ -553,10 +675,19 @@
         private Button BtnSeatC5;
         private Button BtnSeatD5;
         private Button BtnSeatD6;
-        private Label seats;
+        private Label LabelSeatsLoc;
         private Label lblbusinessSeats;
         private Label lblEngiinSeats;
         private Label lblSuudalBatlah;
         private Label label2;
+        private Button btnSuudalConfirm;
+        private DataGridView HereglegchiinMedeelelHaruulah;
+        private Label lblUserInfo;
+        private DataGridView dataGridView1;
+        private Button btnSuudalCancel;
+        private Label label3;
+        private ComboBox comboBox1;
+        private Button btnChangeTolow;
+        private Button btnPrint;
     }
 }

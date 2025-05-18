@@ -1,5 +1,6 @@
 using System;
 using Forms;
+using WinForms.Forms;
 namespace Forms
 {
     internal static class Program
@@ -13,7 +14,7 @@ namespace Forms
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new burtgeh());
+            Application.Run(new CheckInForm());
         }
     }
 
