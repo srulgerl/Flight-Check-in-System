@@ -11,6 +11,9 @@ namespace Data.Repositories
     {
         Task<List<Passenger>> GetAllAsync();
         Task<Passenger> GetPassengerByPassportAsync(string passportNumber);
-        Task<List<Passenger>> GetPassengersByFlghtIdAsync(string flightId);
+        Task<List<Passenger>> GetPassengersByFlightIdAsync(int flightId);
+        Task<Passenger> GetPassengerByFlightIdAsync(int flightId);
+        Task<Passenger> GetPassengerByPassportAndFlightAsync(string passportNumber, int flightId);
+
     }
 }

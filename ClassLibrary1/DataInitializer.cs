@@ -67,7 +67,7 @@ namespace Data
                         Arrival       VARCHAR(50)  NOT NULL,
                         DepartureTime DATETIME     NOT NULL,
                         ArrivalTime   DATETIME     NOT NULL,
-                        Status        VARCHAR(20)  NOT NULL CHECK(Status IN ('Scheduled','Boarding','Departed','Cancelled'))
+                        Status        VARCHAR(20)  NOT NULL CHECK(Status IN ('CheckingIn','Boarding','Departed', 'Delayed', 'Cancelled'))
                     );
 
                     -- Passengers table
@@ -116,7 +116,7 @@ namespace Data
                     -- Insert sample flights
                     INSERT INTO Flights (FlightNumber, Departure, Arrival, DepartureTime, ArrivalTime, Status)
                     VALUES 
-                    ('FL001', 'New York (JFK)', 'London (LHR)', '2023-07-15 08:00:00', '2023-07-15 20:30:00', 'Scheduled'),
+                    ('FL001', 'New York (JFK)', 'London (LHR)', '2023-07-15 08:00:00', '2023-07-15 20:30:00', 'Delayed'),
                     ('FL002', 'Los Angeles (LAX)', 'Tokyo (HND)', '2023-07-16 14:30:00', '2023-07-17 19:45:00', 'Boarding'),
                     ('FL003', 'Paris (CDG)', 'Dubai (DXB)', '2023-07-15 22:15:00', '2023-07-16 06:20:00', 'Departed');
 
@@ -151,18 +151,8 @@ namespace Data
                     ('Sophia', 'Williams', 'GH901234', 3),
                     ('Robert', 'Brown', 'IJ567890', 2);
 
-                    -- Insert sample boarding passes
-                    INSERT INTO BoardingPass (PassengerID, FlightID, SeatID, IssuedAt)
-                    VALUES
-                    -- John Doe has seat 3D on flight 1
-                    (1, 1, 12, '2023-07-14 15:30:00'),
-                    -- Michael Johnson has seat 1C on flight 2
-                    (3, 2, 15, '2023-07-15 10:45:00'),
-                    -- Sophia Williams has seat 1A on flight 3
-                    (4, 3, 25, '2023-07-15 08:20:00');
+                   
 
-                    -- Update seat availability based on boarding passes
-                    UPDATE Seats SET IsAvailable = 0 WHERE SeatID IN (12, 15, 25);
                 ";
                 command.ExecuteNonQuery();
             }

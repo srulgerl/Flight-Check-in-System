@@ -20,7 +20,7 @@ namespace Data.Repositories
             await using var conn = CreateConnection();
             await conn.OpenAsync();
             await using var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT FlightId, FlightNumber, Departure, Arrival, DepartureDate, ArrivalDate, Status FROM Flights;";
+            cmd.CommandText = "SELECT * FROM Flights;";
             await using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -43,7 +43,7 @@ namespace Data.Repositories
             await using var db = CreateConnection();
             await db.OpenAsync();
             await using var cmd = db.CreateCommand();
-            cmd.CommandText = "SELECT FlightId, FlightNumber, Departure, Arrival, DepartureDate, ArrivalDate, Status FROM Flights WHERE FlightId = @Id;";
+            cmd.CommandText = "SELECT * FROM Flights WHERE FlightId = @Id;";
             cmd.Parameters.AddWithValue("@Id", id);
             await using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -62,6 +62,29 @@ namespace Data.Repositories
             return null;
         }
 
+        public async Task<Passenger> GetPassengerByFlightIdAsync(int flightId)
+        {
+            await using var conn = CreateConnection();
+            await conn.OpenAsync();
+            await using var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT PassengerId, PassportNumber, FirstName, LastName, FlightId FROM Passengers WHERE FlightId = @FlightId;";
+            cmd.Parameters.AddWithValue("@FlightId", flightId);
+            await using var reader = await cmd.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return new Passenger
+                {
+                    PassengerId = reader.GetInt32(0),
+                    PassportNumber = reader.GetString(1),
+                    FirstName = reader.GetString(2),
+                    LastName = reader.GetString(3),
+                    FlightId = reader.GetInt32(4)
+                };
+
+            }
+            return null;
+        }
+
         public async Task UpdateFlightStatusAsync(int flightId, FlightStatus status)
         {
             await using var db = CreateConnection();
@@ -74,7 +97,9 @@ namespace Data.Repositories
             cmd.Parameters.AddWithValue("@Status", status);
             await cmd.ExecuteNonQueryAsync();
         }
+
         
+
     }
 
 }

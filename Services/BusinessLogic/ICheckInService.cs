@@ -8,6 +8,6 @@ namespace Services.BusinessLogic
 {
     public interface ICheckInService
     {
-        Task<bool> CheckInPassengerAsync(string passportNumber, int seatId);
+        Task<bool> CheckInPassengerAsync(string flightId, string passportNumber, int seatId);
     }
 }

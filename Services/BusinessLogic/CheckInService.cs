@@ -27,12 +27,12 @@ namespace Services.BusinessLogic
         /// <param name="passportNumber"></param>
         /// <param name="seatId"></param>
         /// <returns></returns>
-        public async Task<bool> CheckInPassengerAsync(string passportNumber, int seatId)
+        public async Task<bool> CheckInPassengerAsync(string flightId, string passportNumber, int seatId)
         {
-            
+            //var fli = await _passengerRepository.GetPassengersByFlghtIdAsync(flightNumber);  
            var passenger = await _passengerRepository.GetPassengerByPassportAsync(passportNumber);
            if (passenger == null)
-                {
+           {
                return false;
            }
            var seat = await _seatRepository.GetByIdAsync(seatId);
@@ -54,6 +54,6 @@ namespace Services.BusinessLogic
            };
            return await _boardingPassRepository.CreateAsync(boardingPass);
         }
-
+        
     }
 }

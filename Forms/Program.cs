@@ -1,11 +1,9 @@
-
 using System;
 using System.Windows.Forms;
 using Data;
 using Data.Repositories;
 using Services.BusinessLogic;
 using WinForms.Forms;
-using Data;
 using Microsoft.Extensions.DependencyInjection;
 using SQLitePCL;
 
@@ -38,6 +36,7 @@ namespace Forms
             services.AddScoped<IPassengerRepository>(_ => new PassengerRepository(connectionString));
             // add others: SeatRepository, etc.
             //services.AddScoped<IPrintService, PrintService>();
+            services.AddScoped<IFlightRepository>(_ => new FlightRepository(connectionString));
             services.AddScoped<ICheckInService, CheckInService>();
             services.AddScoped<ISeatRepository>(_ => new SeatRepository(connectionString));
             services.AddScoped<IBoardingPassRepository>(_ => new BoardingPassRepository(connectionString));

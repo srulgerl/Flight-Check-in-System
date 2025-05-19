@@ -22,6 +22,7 @@ namespace WinForms.Forms
     {
         private readonly IPassengerRepository _passengerRepository;
         private readonly ICheckInService _checkInService;
+        private readonly IFlightRepository _flightRepository;
         //boarding pass hevlegch
         private PrintPreviewDialog printPreviewDialog1;
         private PrintDocument printDocument1;
@@ -30,13 +31,23 @@ namespace WinForms.Forms
         private string flightNumber;
         private string seatNumber;
 
-        public CheckInForm(ICheckInService checkInService, IPassengerRepository passengerRepository)
+        public CheckInForm(ICheckInService checkInService, IPassengerRepository passengerRepository, IFlightRepository flightRepository)
         {
 
             _checkInService = checkInService;
             _passengerRepository = passengerRepository;
+            _flightRepository = flightRepository;
             InitializeComponent();
-            
+            LoadFlightNumbers();
+
+        }
+
+        private async void LoadFlightNumbers()
+        {
+            var flights = await _flightRepository.GetAllAsync();
+            flightNumComboBox.DataSource = flights;
+            flightNumComboBox.DisplayMember = "FlightNumber";
+            flightNumComboBox.ValueMember = "FlightId";
         }
 
         private void lbldate_Click(object sender, EventArgs e)
@@ -49,12 +60,12 @@ namespace WinForms.Forms
             lbldate.Text = $"Огноо:{DateTime.Now:dd/MM/yyyy}";
         }
 
-      
-       
-       
+
+
+
         private void btnexit_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void btnSeatA1_Click(object sender, EventArgs e)
@@ -75,7 +86,6 @@ namespace WinForms.Forms
         {
             // Example: get bookingId from user selection or input
             int bookingId = 1; // Replace with actual logic
-            LoadBoardingPassData(bookingId);
 
             printDocument1 = new PrintDocument();
             printDocument1.PrintPage += printDocument1_PrintPage;
@@ -84,27 +94,7 @@ namespace WinForms.Forms
             printPreviewDialog1.Document = printDocument1;
             printPreviewDialog1.ShowDialog();
         }
-        private void LoadBoardingPassData(int bookingId)
-        {
-            //string connectionString = ConfigurationManager.ConnectionStrings["Flights"].ConnectionString;
-            //string query = "SELECT PassengerName, FlightNumber, SeatNumber FROM Bookings WHERE BookingId = @BookingId";
-
-            //using (SqlConnection conn = new SqlConnection(connectionString))
-            //using (SqlCommand cmd = new SqlCommand(query, conn))
-            //{
-            //    cmd.Parameters.AddWithValue("@BookingId", bookingId);
-            //    conn.Open();
-            //    using (SqlDataReader reader = cmd.ExecuteReader())
-            //    {
-            //        if (reader.Read())
-            //        {
-            //            passengerName = reader["PassengerName"].ToString();
-            //            flightNumber = reader["FlightNumber"].ToString();
-            //            seatNumber = reader["SeatNumber"].ToString();
-            //        }
-            //    }
-            //}
-        }
+       
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
             Font font = new Font("Arial", 16);
@@ -120,6 +110,8 @@ namespace WinForms.Forms
 
         private async void btnPasswordSearch_Click(object sender, EventArgs e)
         {
+            int flightId = (int)flightNumComboBox.SelectedValue;
+
             string passportNumber = passportNumTxtBx.Text.Trim();
 
             if (string.IsNullOrEmpty(passportNumber))
@@ -127,10 +119,16 @@ namespace WinForms.Forms
                 MessageBox.Show("Паспортын дугаараа оруулна уу.");
                 return;
             }
-            var passenger = await _passengerRepository.GetPassengerByPassportAsync(passportNumber);
 
-            var displayPassenger =  new List<Passenger>
-            { 
+            var passenger = await _passengerRepository.GetPassengerByPassportAndFlightAsync(passportNumber, flightId);
+
+            if (passenger == null)
+            {
+                MessageBox.Show($"{flightNumber} dugaartai nisleged {passportNumber} passport dugaartai hereglecg oldsongui");
+                return;
+            }
+            var displayPassenger = new List<Passenger>
+            {
                 new Passenger
                 {
                     FirstName = passenger.FirstName,
@@ -140,10 +138,12 @@ namespace WinForms.Forms
                     }
             };
             passengerInfoGridView.DataSource = displayPassenger;
-            MessageBox.Show($"{passenger} oldson");
+            MessageBox.Show($"{passenger.FirstName} oldson");
         }
- 
- 
-      
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

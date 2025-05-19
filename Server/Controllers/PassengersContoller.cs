@@ -26,7 +26,7 @@ namespace Server.Controllers
             return Ok(passenger);
         }
         [HttpGet("by-flight/{flightId}")]
-        public async Task<IActionResult> GetByFlight(string flightId)
+        public async Task<IActionResult> GetByFlight(int flightId)
         {
             var passengers = await _repo.GetPassengersByFlghtIdAsync(flightId);
             if (passengers == null || !passengers.Any()) return NotFound();

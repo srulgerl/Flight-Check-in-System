@@ -14,7 +14,10 @@ namespace Data.Repositories
         Task<List<Flight>> GetAllAsync();
      
         Task UpdateFlightStatusAsync( int flightId, FlightStatus status);
-     
+
+        Task<Passenger> GetPassengerByFlightIdAsync(int flightId);
+
+
 
     }
 }
