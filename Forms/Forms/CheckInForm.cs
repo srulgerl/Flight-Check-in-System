@@ -12,13 +12,16 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.Data.SqlClient; 
 using System.Configuration;
 using Data.Models;
+using Data.Repositories;
+using Services.BusinessLogic;
 
 
 namespace WinForms.Forms
 {
     public partial class CheckInForm : Form
     {
-
+        private readonly IPassengerRepository _passengerRepository;
+        private readonly ICheckInService _checkInService;
         //boarding pass hevlegch
         private PrintPreviewDialog printPreviewDialog1;
         private PrintDocument printDocument1;
@@ -27,14 +30,13 @@ namespace WinForms.Forms
         private string flightNumber;
         private string seatNumber;
 
-        public CheckInForm()
+        public CheckInForm(ICheckInService checkInService, IPassengerRepository passengerRepository)
         {
+
+            _checkInService = checkInService;
+            _passengerRepository = passengerRepository;
             InitializeComponent();
-        }
-
-        private void appbar_Click(object sender, EventArgs e)
-        {
-
+            
         }
 
         private void lbldate_Click(object sender, EventArgs e)
@@ -47,27 +49,10 @@ namespace WinForms.Forms
             lbldate.Text = $"Огноо:{DateTime.Now:dd/MM/yyyy}";
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelback_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
+      
+       
+       
         private void btnexit_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LabelSeatsLoc_Click(object sender, EventArgs e)
         {
 
         }
@@ -101,24 +86,24 @@ namespace WinForms.Forms
         }
         private void LoadBoardingPassData(int bookingId)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Flights"].ConnectionString;
-            string query = "SELECT PassengerName, FlightNumber, SeatNumber FROM Bookings WHERE BookingId = @BookingId";
+            //string connectionString = ConfigurationManager.ConnectionStrings["Flights"].ConnectionString;
+            //string query = "SELECT PassengerName, FlightNumber, SeatNumber FROM Bookings WHERE BookingId = @BookingId";
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@BookingId", bookingId);
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        passengerName = reader["PassengerName"].ToString();
-                        flightNumber = reader["FlightNumber"].ToString();
-                        seatNumber = reader["SeatNumber"].ToString();
-                    }
-                }
-            }
+            //using (SqlConnection conn = new SqlConnection(connectionString))
+            //using (SqlCommand cmd = new SqlCommand(query, conn))
+            //{
+            //    cmd.Parameters.AddWithValue("@BookingId", bookingId);
+            //    conn.Open();
+            //    using (SqlDataReader reader = cmd.ExecuteReader())
+            //    {
+            //        if (reader.Read())
+            //        {
+            //            passengerName = reader["PassengerName"].ToString();
+            //            flightNumber = reader["FlightNumber"].ToString();
+            //            seatNumber = reader["SeatNumber"].ToString();
+            //        }
+            //    }
+            //}
         }
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -133,55 +118,32 @@ namespace WinForms.Forms
             e.Graphics.DrawString($"Seat: {seatNumber}", font, Brushes.Black, 100, y);
         }
 
-        
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private async void btnPasswordSearch_Click(object sender, EventArgs e)
         {
-            string passportNumber = textBox2.Text.Trim();
-            if (!string.IsNullOrEmpty(passportNumber))
-            {
-                SearchUserByPassport(passportNumber);
-            }
-            else
-            {
-                HereglegchiinMedeelelHaruulah.DataSource = null;
-            }
+            string passportNumber = passportNumTxtBx.Text.Trim();
 
-        }
-
-        private void btnPasswordSearch_Click(object sender, EventArgs e)
-        {
-            string passportNumber = textBox2.Text.Trim();
-            if (!string.IsNullOrEmpty(passportNumber))
-            {
-                SearchUserByPassport(passportNumber);
-            }
-            else
+            if (string.IsNullOrEmpty(passportNumber))
             {
                 MessageBox.Show("Паспортын дугаараа оруулна уу.");
+                return;
             }
-        }
-        private void HereglegchiinMedeelelHaruulah_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
+            var passenger = await _passengerRepository.GetPassengerByPassportAsync(passportNumber);
 
-        }
-        private void SearchUserByPassport(string passportNumber)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["FlightCheckinDb"].ConnectionString;
-            string query = "SELECT * FROM Users WHERE PassportNumber = @PassportNumber";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@PassportNumber", passportNumber);
-                conn.Open();
-                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            var displayPassenger =  new List<Passenger>
+            { 
+                new Passenger
                 {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    HereglegchiinMedeelelHaruulah.DataSource = dt;
-                }
-            }
+                    FirstName = passenger.FirstName,
+                    LastName = passenger.LastName,
+                    PassportNumber = passenger.PassportNumber,
+                    FlightId = passenger.FlightId,
+                    }
+            };
+            passengerInfoGridView.DataSource = displayPassenger;
+            MessageBox.Show($"{passenger} oldson");
         }
+ 
+ 
+      
     }
 }

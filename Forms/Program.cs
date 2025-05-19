@@ -1,3 +1,4 @@
+
 using System;
 using System.Windows.Forms;
 using Data;
@@ -41,10 +42,10 @@ namespace Forms
             services.AddScoped<ISeatRepository>(_ => new SeatRepository(connectionString));
             services.AddScoped<IBoardingPassRepository>(_ => new BoardingPassRepository(connectionString));
 
-            services.AddScoped<LoginForm>();
+            services.AddScoped<CheckInForm>();
 
             var provider = services.BuildServiceProvider();
-            Application.Run(provider.GetRequiredService<LoginForm>());
+            Application.Run(provider.GetRequiredService<CheckInForm>());
 
         }
     }
