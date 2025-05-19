@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Printing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.Data.SqlClient; 
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using Data.Models;
 using Data.Repositories;
@@ -71,7 +71,7 @@ namespace WinForms.Forms
 
         //private async Task SeatBtn_Click(object sender, EventArgs e)
         //{
-         
+
         //    if (sender is not Button btn || _currentPassengerId == null)
         //    {
         //        return;
@@ -106,7 +106,7 @@ namespace WinForms.Forms
             printPreviewDialog1.Document = printDocument1;
             printPreviewDialog1.ShowDialog();
         }
-       
+
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
             Font font = new Font("Arial", 16);
@@ -123,10 +123,7 @@ namespace WinForms.Forms
         private async void btnPasswordSearch_Click(object sender, EventArgs e)
         {
             int flightId = (int)flightNumComboBox.SelectedValue;
-
             string passportNumber = passportNumTxtBx.Text.Trim();
-
-         
 
             if (string.IsNullOrEmpty(passportNumber))
             {
@@ -138,26 +135,105 @@ namespace WinForms.Forms
 
             if (passenger == null)
             {
-                MessageBox.Show($"{flightNumber} dugaartai nisleged {passportNumber} passport dugaartai hereglecg oldsongui");
+                MessageBox.Show($"{flightNumber} дугаартай нислэгт {passportNumber} паспортын дугаартай зорчигч олдсонгүй.");
                 return;
             }
-            var displayPassenger = new List<Passenger>
-            {
-                new Passenger
-                {
-                    FirstName = passenger.FirstName,
-                    LastName = passenger.LastName,
-                    PassportNumber = passenger.PassportNumber,
-                    FlightId = passenger.FlightId,
-                    }
-            };
-            passengerInfoGridView.DataSource = displayPassenger;
+
+            // ListView тохиргоо
+            listView1.Clear(); // баганууд болон өгөгдлийг бүгдийг цэвэрлэнэ
+            listView1.View = View.Details;
+            listView1.Columns.Add("Талбар", 120);
+            listView1.Columns.Add("Мэдээлэл", 200);
+
+            // Босоо харуулалт хийх мөрүүд нэмэх
+            listView1.Items.Add(new ListViewItem(new[] { "Нэр", passenger.FirstName }));
+            listView1.Items.Add(new ListViewItem(new[] { "Овог", passenger.LastName }));
+            listView1.Items.Add(new ListViewItem(new[] { "Паспорт", passenger.PassportNumber }));
+            listView1.Items.Add(new ListViewItem(new[] { "Нислэгийн ID", flightId.ToString() }));
+
             _currentPassengerId = passenger.PassengerId;
         }
 
-        private void label2_Click(object sender, EventArgs e)
+
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void btnSeatA1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSeatConfirm_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelSeatConfirm_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void BtnSeatB1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatB2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatB3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatB4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatB5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatB6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatA2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatA3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatA4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatA5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatA6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSeatC1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

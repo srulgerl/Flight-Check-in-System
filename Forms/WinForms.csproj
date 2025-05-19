@@ -20,9 +20,7 @@
     <ProjectReference Include="..\ClassLibrary1\Data.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\Tests\Tests.csproj" /> <ProjectReference Include="..\ClassLibrary1\Data.csproj" />
-    <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\Tests\Tests.csproj" />
-    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
 </Project>
