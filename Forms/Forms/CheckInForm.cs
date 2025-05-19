@@ -33,7 +33,6 @@ namespace WinForms.Forms
         private int _currentPassengerId;
         // Add a field to track if a passenger is found
         private bool passengerFound = false;
-
         public CheckInForm(ICheckInService checkInService, IPassengerRepository passengerRepository, IFlightRepository flightRepository)
         {
 
@@ -155,8 +154,7 @@ namespace WinForms.Forms
 
             _currentPassengerId = passenger.PassengerId;
             passengerFound = true;
-            // else:
-            // passengerFound = false;
+            // passenger oldoj baij batalgaajuulah panel haragdana
             panelSeatConfirm.Visible = false;
 
         }
@@ -178,24 +176,25 @@ namespace WinForms.Forms
         {
             if (passengerFound)
             {
-                // Show confirmation panel
+                // Gather personal info from ListView
+                StringBuilder infoBuilder = new StringBuilder();
+                foreach (ListViewItem item in listView1.Items)
+                {
+                    infoBuilder.AppendLine($"{item.SubItems[0].Text}: {item.SubItems[1].Text}");
+                }
+
+                // Show seat number and personal info together
                 panelSeatConfirm.Visible = true;
-                // Optionally update label with seat info
-                lblSeatConfirm.Text = $"Суудал: {((Button)sender).Text}";
+                lblSeatConfirm.Text = $"Суудал: {((Button)sender).Text}\n{infoBuilder}";
             }
             else
             {
-                // Optionally show a message: "Зорчигчийг эхлээд хайна уу"
                 MessageBox.Show("Эхлээд зорчигчийг хайна уу.");
             }
         }
 
-        private void btnSeatA1_Click_1(object sender, EventArgs e)
-        {
 
-        }
-
-        private void BtnSeatA2_Click_1(object sender, EventArgs e)
+        private void panelSeatConfirm_Paint(object sender, PaintEventArgs e)
         {
 
         }

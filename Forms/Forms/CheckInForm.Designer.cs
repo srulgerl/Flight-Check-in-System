@@ -198,7 +198,7 @@
             btnSeatA1.TabIndex = 19;
             btnSeatA1.Text = "A1";
             btnSeatA1.UseVisualStyleBackColor = true;
-            btnSeatA1.Click += btnSeatA1_Click_1;
+            btnSeatA1.Click += SeatButton_Click;
             // 
             // BtnSeatC1
             // 
@@ -208,6 +208,7 @@
             BtnSeatC1.TabIndex = 20;
             BtnSeatC1.Text = "C1";
             BtnSeatC1.UseVisualStyleBackColor = true;
+            BtnSeatC1.Click += SeatButton_Click;
             // 
             // BtnSeatB2
             // 
@@ -217,6 +218,7 @@
             BtnSeatB2.TabIndex = 21;
             BtnSeatB2.Text = "B2";
             BtnSeatB2.UseVisualStyleBackColor = true;
+            BtnSeatB2.Click += SeatButton_Click;
             // 
             // BtnSeatA2
             // 
@@ -226,7 +228,7 @@
             BtnSeatA2.TabIndex = 22;
             BtnSeatA2.Text = "A2";
             BtnSeatA2.UseVisualStyleBackColor = true;
-            BtnSeatA2.Click += BtnSeatA2_Click_1;
+            BtnSeatA2.Click += SeatButton_Click;
             // 
             // BtnSeatB1
             // 
@@ -236,6 +238,7 @@
             BtnSeatB1.TabIndex = 23;
             BtnSeatB1.Text = "B1";
             BtnSeatB1.UseVisualStyleBackColor = true;
+            BtnSeatB1.Click += SeatButton_Click;
             // 
             // BtnSeatB4
             // 
@@ -245,6 +248,7 @@
             BtnSeatB4.TabIndex = 24;
             BtnSeatB4.Text = "B4";
             BtnSeatB4.UseVisualStyleBackColor = true;
+            BtnSeatB4.Click += SeatButton_Click;
             // 
             // BtnSeatA4
             // 
@@ -254,6 +258,7 @@
             BtnSeatA4.TabIndex = 25;
             BtnSeatA4.Text = "A4";
             BtnSeatA4.UseVisualStyleBackColor = true;
+            BtnSeatA4.Click += SeatButton_Click;
             // 
             // BtnSeatB3
             // 
@@ -263,6 +268,7 @@
             BtnSeatB3.TabIndex = 26;
             BtnSeatB3.Text = "B3";
             BtnSeatB3.UseVisualStyleBackColor = true;
+            BtnSeatB3.Click += SeatButton_Click;
             // 
             // BtnSeatA3
             // 
@@ -272,6 +278,7 @@
             BtnSeatA3.TabIndex = 27;
             BtnSeatA3.Text = "A3";
             BtnSeatA3.UseVisualStyleBackColor = true;
+            BtnSeatA3.Click += SeatButton_Click;
             // 
             // BtnSeatD2
             // 
@@ -281,6 +288,7 @@
             BtnSeatD2.TabIndex = 28;
             BtnSeatD2.Text = "D2";
             BtnSeatD2.UseVisualStyleBackColor = true;
+            BtnSeatD2.Click += SeatButton_Click;
             // 
             // BtnSeatC2
             // 
@@ -290,6 +298,7 @@
             BtnSeatC2.TabIndex = 29;
             BtnSeatC2.Text = "C2";
             BtnSeatC2.UseVisualStyleBackColor = true;
+            BtnSeatC2.Click += SeatButton_Click;
             // 
             // BtnSeatD1
             // 
@@ -299,6 +308,7 @@
             BtnSeatD1.TabIndex = 30;
             BtnSeatD1.Text = "D1";
             BtnSeatD1.UseVisualStyleBackColor = true;
+            BtnSeatD1.Click += SeatButton_Click;
             // 
             // BtnSeatB6
             // 
@@ -308,6 +318,7 @@
             BtnSeatB6.TabIndex = 31;
             BtnSeatB6.Text = "B6";
             BtnSeatB6.UseVisualStyleBackColor = true;
+            BtnSeatB6.Click += SeatButton_Click;
             // 
             // BtnSeatA6
             // 
@@ -317,6 +328,7 @@
             BtnSeatA6.TabIndex = 32;
             BtnSeatA6.Text = "A6";
             BtnSeatA6.UseVisualStyleBackColor = true;
+            BtnSeatA6.Click += SeatButton_Click;
             // 
             // BtnSeatB5
             // 
@@ -326,6 +338,7 @@
             BtnSeatB5.TabIndex = 33;
             BtnSeatB5.Text = "B5";
             BtnSeatB5.UseVisualStyleBackColor = true;
+            BtnSeatB5.Click += SeatButton_Click;
             // 
             // BtnSeatA5
             // 
@@ -335,6 +348,7 @@
             BtnSeatA5.TabIndex = 34;
             BtnSeatA5.Text = "A5";
             BtnSeatA5.UseVisualStyleBackColor = true;
+            BtnSeatA5.Click += SeatButton_Click;
             // 
             // BtnSeatC4
             // 
@@ -344,6 +358,7 @@
             BtnSeatC4.TabIndex = 35;
             BtnSeatC4.Text = "C4";
             BtnSeatC4.UseVisualStyleBackColor = true;
+            BtnSeatC4.Click += SeatButton_Click;
             // 
             // BtnSeatD4
             // 
@@ -353,6 +368,7 @@
             BtnSeatD4.TabIndex = 36;
             BtnSeatD4.Text = "D4";
             BtnSeatD4.UseVisualStyleBackColor = true;
+            BtnSeatD4.Click += SeatButton_Click;
             // 
             // BtnSeatD3
             // 
@@ -362,6 +378,7 @@
             BtnSeatD3.TabIndex = 37;
             BtnSeatD3.Text = "D3";
             BtnSeatD3.UseVisualStyleBackColor = true;
+            BtnSeatD3.Click += SeatButton_Click;
             // 
             // BtnSeatC3
             // 
@@ -371,6 +388,7 @@
             BtnSeatC3.TabIndex = 38;
             BtnSeatC3.Text = "C3";
             BtnSeatC3.UseVisualStyleBackColor = true;
+            BtnSeatC3.Click += SeatButton_Click;
             // 
             // BtnSeatC6
             // 
@@ -380,6 +398,7 @@
             BtnSeatC6.TabIndex = 39;
             BtnSeatC6.Text = "C6";
             BtnSeatC6.UseVisualStyleBackColor = true;
+            BtnSeatC6.Click += SeatButton_Click;
             // 
             // BtnSeatC5
             // 
@@ -389,6 +408,7 @@
             BtnSeatC5.TabIndex = 40;
             BtnSeatC5.Text = "C5";
             BtnSeatC5.UseVisualStyleBackColor = true;
+            BtnSeatC5.Click += SeatButton_Click;
             // 
             // BtnSeatD5
             // 
@@ -398,6 +418,7 @@
             BtnSeatD5.TabIndex = 41;
             BtnSeatD5.Text = "D5";
             BtnSeatD5.UseVisualStyleBackColor = true;
+            BtnSeatD5.Click += SeatButton_Click;
             // 
             // BtnSeatD6
             // 
@@ -407,6 +428,7 @@
             BtnSeatD6.TabIndex = 42;
             BtnSeatD6.Text = "D6";
             BtnSeatD6.UseVisualStyleBackColor = true;
+            BtnSeatD6.Click += SeatButton_Click;
             // 
             // LabelSeatsLoc
             // 
@@ -587,32 +609,6 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(347, 333);
             panel2.TabIndex = 60;
-            this.btnSeatA1.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatA2.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatA3.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatA4.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatA5.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatA6.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatB1.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatB2.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatB3.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatB4.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatB5.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatB6.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatC1.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatC2.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatC3.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatC4.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatC5.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatC6.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatD1.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatD2.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatD3.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatD4.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatD5.Click += new System.EventHandler(this.SeatButton_Click);
-            this.BtnSeatD6.Click += new System.EventHandler(this.SeatButton_Click);
-
-
             // 
             // listView1
             // 
@@ -631,6 +627,7 @@
             panelSeatConfirm.Size = new Size(250, 217);
             panelSeatConfirm.TabIndex = 61;
             panelSeatConfirm.Visible = false;
+            panelSeatConfirm.Paint += panelSeatConfirm_Paint;
             // 
             // lblSeatConfirm
             // 
