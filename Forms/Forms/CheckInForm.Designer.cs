@@ -37,7 +37,6 @@
             lblUserSearch = new Label();
             LblPasswordNumber = new Label();
             labelBG4 = new Label();
-            labelback3 = new Label();
             passportNumTxtBx = new TextBox();
             btnPasswordSearch = new Button();
             btnSeatA1 = new Button();
@@ -68,7 +67,6 @@
             lblbusinessSeats = new Label();
             lblEngiinSeats = new Label();
             lblSuudalBatlah = new Label();
-            label2 = new Label();
             btnSuudalConfirm = new Button();
             passengerInfoGridView = new DataGridView();
             lblUserInfo = new Label();
@@ -80,8 +78,12 @@
             btnPrint = new Button();
             userLbl = new Label();
             flightNumComboBox = new ComboBox();
+            panel1 = new Panel();
+            panel2 = new Panel();
             ((System.ComponentModel.ISupportInitialize)passengerInfoGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // appbar
@@ -179,15 +181,6 @@
             labelBG4.Size = new Size(462, 483);
             labelBG4.TabIndex = 9;
             // 
-            // labelback3
-            // 
-            labelback3.BackColor = SystemColors.ControlLight;
-            labelback3.Location = new Point(509, 142);
-            labelback3.Margin = new Padding(5, 0, 5, 0);
-            labelback3.Name = "labelback3";
-            labelback3.Size = new Size(653, 779);
-            labelback3.TabIndex = 10;
-            // 
             // passportNumTxtBx
             // 
             passportNumTxtBx.Location = new Point(15, 237);
@@ -209,105 +202,106 @@
             // 
             // btnSeatA1
             // 
-            btnSeatA1.Location = new Point(666, 234);
+            btnSeatA1.Location = new Point(114, 56);
             btnSeatA1.Margin = new Padding(5);
             btnSeatA1.Name = "btnSeatA1";
             btnSeatA1.Size = new Size(60, 46);
             btnSeatA1.TabIndex = 19;
             btnSeatA1.Text = "A1";
             btnSeatA1.UseVisualStyleBackColor = true;
-            btnSeatA1.Click += btnSeatA1_Click;
+            //btnSeatA1.Click += SeatBtn_Click;
             // 
             // BtnSeatC1
             // 
-            BtnSeatC1.Location = new Point(871, 234);
+            BtnSeatC1.Location = new Point(319, 56);
             BtnSeatC1.Margin = new Padding(5);
             BtnSeatC1.Name = "BtnSeatC1";
             BtnSeatC1.Size = new Size(60, 46);
             BtnSeatC1.TabIndex = 20;
             BtnSeatC1.Text = "C1";
             BtnSeatC1.UseVisualStyleBackColor = true;
+            //BtnSeatC1.Click += SeatBtn_Click;
             // 
             // BtnSeatB2
             // 
-            BtnSeatB2.Location = new Point(736, 290);
+            BtnSeatB2.Location = new Point(184, 112);
             BtnSeatB2.Margin = new Padding(5);
             BtnSeatB2.Name = "BtnSeatB2";
             BtnSeatB2.Size = new Size(60, 46);
             BtnSeatB2.TabIndex = 21;
             BtnSeatB2.Text = "B2";
             BtnSeatB2.UseVisualStyleBackColor = true;
-            BtnSeatB2.Click += btnSeatA1_Click;
+            //BtnSeatB2.Click += SeatBtn_Click;
             // 
             // BtnSeatA2
             // 
-            BtnSeatA2.Location = new Point(666, 290);
+            BtnSeatA2.Location = new Point(114, 112);
             BtnSeatA2.Margin = new Padding(5);
             BtnSeatA2.Name = "BtnSeatA2";
             BtnSeatA2.Size = new Size(60, 46);
             BtnSeatA2.TabIndex = 22;
             BtnSeatA2.Text = "A2";
             BtnSeatA2.UseVisualStyleBackColor = true;
-            BtnSeatA2.Click += btnSeatA1_Click;
+            //BtnSeatA2.Click += SeatBtn_Click;
             // 
             // BtnSeatB1
             // 
-            BtnSeatB1.Location = new Point(736, 234);
+            BtnSeatB1.Location = new Point(184, 56);
             BtnSeatB1.Margin = new Padding(5);
             BtnSeatB1.Name = "BtnSeatB1";
             BtnSeatB1.Size = new Size(60, 46);
             BtnSeatB1.TabIndex = 23;
             BtnSeatB1.Text = "B1";
             BtnSeatB1.UseVisualStyleBackColor = true;
-            BtnSeatB1.Click += btnSeatA1_Click;
-            // 
+            //BtnSeatB1.Click += SeatBtn_Click;
+            //// 
             // BtnSeatB4
             // 
-            BtnSeatB4.Location = new Point(736, 432);
+            BtnSeatB4.Location = new Point(184, 254);
             BtnSeatB4.Margin = new Padding(5);
             BtnSeatB4.Name = "BtnSeatB4";
             BtnSeatB4.Size = new Size(60, 46);
             BtnSeatB4.TabIndex = 24;
             BtnSeatB4.Text = "B4";
             BtnSeatB4.UseVisualStyleBackColor = true;
-            BtnSeatB4.Click += btnSeatA1_Click;
+            //BtnSeatB4.Click += SeatBtn_Click;
             // 
             // BtnSeatA4
             // 
-            BtnSeatA4.Location = new Point(666, 432);
+            BtnSeatA4.Location = new Point(114, 254);
             BtnSeatA4.Margin = new Padding(5);
             BtnSeatA4.Name = "BtnSeatA4";
             BtnSeatA4.Size = new Size(60, 46);
             BtnSeatA4.TabIndex = 25;
             BtnSeatA4.Text = "A4";
             BtnSeatA4.UseVisualStyleBackColor = true;
-            BtnSeatA4.Click += btnSeatA1_Click;
+            //BtnSeatA4.Click += SeatBtn_Click;
             // 
             // BtnSeatB3
             // 
-            BtnSeatB3.Location = new Point(736, 378);
+            BtnSeatB3.Location = new Point(184, 200);
             BtnSeatB3.Margin = new Padding(5);
             BtnSeatB3.Name = "BtnSeatB3";
             BtnSeatB3.Size = new Size(60, 46);
             BtnSeatB3.TabIndex = 26;
             BtnSeatB3.Text = "B3";
             BtnSeatB3.UseVisualStyleBackColor = true;
-            BtnSeatB3.Click += btnSeatA1_Click;
+            //BtnSeatB3.Click += SeatBtn_Click;
             // 
             // BtnSeatA3
             // 
-            BtnSeatA3.Location = new Point(666, 378);
+            BtnSeatA3.Location = new Point(114, 200);
             BtnSeatA3.Margin = new Padding(5);
             BtnSeatA3.Name = "BtnSeatA3";
             BtnSeatA3.Size = new Size(60, 46);
             BtnSeatA3.TabIndex = 27;
             BtnSeatA3.Text = "A3";
             BtnSeatA3.UseVisualStyleBackColor = true;
-            BtnSeatA3.Click += btnSeatA1_Click;
+            //BtnSeatA3.Click += SeatBtn_Click;
             // 
             // BtnSeatD2
             // 
-            BtnSeatD2.Location = new Point(941, 290);
+            BtnSeatD2.Location = new Point(389, 112);
             BtnSeatD2.Margin = new Padding(5);
             BtnSeatD2.Name = "BtnSeatD2";
             BtnSeatD2.Size = new Size(60, 46);
@@ -317,7 +311,7 @@
             // 
             // BtnSeatC2
             // 
-            BtnSeatC2.Location = new Point(871, 290);
+            BtnSeatC2.Location = new Point(319, 112);
             BtnSeatC2.Margin = new Padding(5);
             BtnSeatC2.Name = "BtnSeatC2";
             BtnSeatC2.Size = new Size(60, 46);
@@ -327,7 +321,7 @@
             // 
             // BtnSeatD1
             // 
-            BtnSeatD1.Location = new Point(941, 237);
+            BtnSeatD1.Location = new Point(389, 59);
             BtnSeatD1.Margin = new Padding(5);
             BtnSeatD1.Name = "BtnSeatD1";
             BtnSeatD1.Size = new Size(60, 46);
@@ -337,51 +331,51 @@
             // 
             // BtnSeatB6
             // 
-            BtnSeatB6.Location = new Point(736, 544);
+            BtnSeatB6.Location = new Point(184, 366);
             BtnSeatB6.Margin = new Padding(5);
             BtnSeatB6.Name = "BtnSeatB6";
             BtnSeatB6.Size = new Size(60, 46);
             BtnSeatB6.TabIndex = 31;
             BtnSeatB6.Text = "B6";
             BtnSeatB6.UseVisualStyleBackColor = true;
-            BtnSeatB6.Click += btnSeatA1_Click;
+            //BtnSeatB6.Click += SeatBtn_Click;
             // 
             // BtnSeatA6
             // 
-            BtnSeatA6.Location = new Point(666, 544);
+            BtnSeatA6.Location = new Point(114, 366);
             BtnSeatA6.Margin = new Padding(5);
             BtnSeatA6.Name = "BtnSeatA6";
             BtnSeatA6.Size = new Size(60, 46);
             BtnSeatA6.TabIndex = 32;
             BtnSeatA6.Text = "A6";
             BtnSeatA6.UseVisualStyleBackColor = true;
-            BtnSeatA6.Click += btnSeatA1_Click;
+            //BtnSeatA6.Click += SeatBtn_Click;
             // 
             // BtnSeatB5
             // 
-            BtnSeatB5.Location = new Point(736, 488);
+            BtnSeatB5.Location = new Point(184, 310);
             BtnSeatB5.Margin = new Padding(5);
             BtnSeatB5.Name = "BtnSeatB5";
             BtnSeatB5.Size = new Size(60, 46);
             BtnSeatB5.TabIndex = 33;
             BtnSeatB5.Text = "B5";
             BtnSeatB5.UseVisualStyleBackColor = true;
-            BtnSeatB5.Click += btnSeatA1_Click;
+            //BtnSeatB5.Click += SeatBtn_Click;
             // 
             // BtnSeatA5
             // 
-            BtnSeatA5.Location = new Point(666, 488);
+            BtnSeatA5.Location = new Point(114, 310);
             BtnSeatA5.Margin = new Padding(5);
             BtnSeatA5.Name = "BtnSeatA5";
             BtnSeatA5.Size = new Size(60, 46);
             BtnSeatA5.TabIndex = 34;
             BtnSeatA5.Text = "A5";
             BtnSeatA5.UseVisualStyleBackColor = true;
-            BtnSeatA5.Click += btnSeatA1_Click;
+            //BtnSeatA5.Click += SeatBtn_Click;
             // 
             // BtnSeatC4
             // 
-            BtnSeatC4.Location = new Point(871, 432);
+            BtnSeatC4.Location = new Point(319, 254);
             BtnSeatC4.Margin = new Padding(5);
             BtnSeatC4.Name = "BtnSeatC4";
             BtnSeatC4.Size = new Size(60, 46);
@@ -391,7 +385,7 @@
             // 
             // BtnSeatD4
             // 
-            BtnSeatD4.Location = new Point(941, 432);
+            BtnSeatD4.Location = new Point(389, 254);
             BtnSeatD4.Margin = new Padding(5);
             BtnSeatD4.Name = "BtnSeatD4";
             BtnSeatD4.Size = new Size(60, 46);
@@ -401,7 +395,7 @@
             // 
             // BtnSeatD3
             // 
-            BtnSeatD3.Location = new Point(941, 378);
+            BtnSeatD3.Location = new Point(389, 200);
             BtnSeatD3.Margin = new Padding(5);
             BtnSeatD3.Name = "BtnSeatD3";
             BtnSeatD3.Size = new Size(60, 46);
@@ -411,7 +405,7 @@
             // 
             // BtnSeatC3
             // 
-            BtnSeatC3.Location = new Point(871, 378);
+            BtnSeatC3.Location = new Point(319, 200);
             BtnSeatC3.Margin = new Padding(5);
             BtnSeatC3.Name = "BtnSeatC3";
             BtnSeatC3.Size = new Size(60, 46);
@@ -421,7 +415,7 @@
             // 
             // BtnSeatC6
             // 
-            BtnSeatC6.Location = new Point(871, 544);
+            BtnSeatC6.Location = new Point(319, 366);
             BtnSeatC6.Margin = new Padding(5);
             BtnSeatC6.Name = "BtnSeatC6";
             BtnSeatC6.Size = new Size(60, 46);
@@ -431,7 +425,7 @@
             // 
             // BtnSeatC5
             // 
-            BtnSeatC5.Location = new Point(871, 488);
+            BtnSeatC5.Location = new Point(319, 310);
             BtnSeatC5.Margin = new Padding(5);
             BtnSeatC5.Name = "BtnSeatC5";
             BtnSeatC5.Size = new Size(60, 46);
@@ -441,7 +435,7 @@
             // 
             // BtnSeatD5
             // 
-            BtnSeatD5.Location = new Point(941, 488);
+            BtnSeatD5.Location = new Point(389, 310);
             BtnSeatD5.Margin = new Padding(5);
             BtnSeatD5.Name = "BtnSeatD5";
             BtnSeatD5.Size = new Size(60, 46);
@@ -451,7 +445,7 @@
             // 
             // BtnSeatD6
             // 
-            BtnSeatD6.Location = new Point(941, 544);
+            BtnSeatD6.Location = new Point(389, 366);
             BtnSeatD6.Margin = new Padding(5);
             BtnSeatD6.Name = "BtnSeatD6";
             BtnSeatD6.Size = new Size(60, 46);
@@ -464,7 +458,7 @@
             LabelSeatsLoc.AutoSize = true;
             LabelSeatsLoc.BackColor = SystemColors.ControlLight;
             LabelSeatsLoc.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            LabelSeatsLoc.Location = new Point(700, 142);
+            LabelSeatsLoc.Location = new Point(201, 0);
             LabelSeatsLoc.Margin = new Padding(5, 0, 5, 0);
             LabelSeatsLoc.Name = "LabelSeatsLoc";
             LabelSeatsLoc.Size = new Size(233, 32);
@@ -476,7 +470,7 @@
             lblbusinessSeats.AutoSize = true;
             lblbusinessSeats.BackColor = SystemColors.ControlLight;
             lblbusinessSeats.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblbusinessSeats.Location = new Point(788, 200);
+            lblbusinessSeats.Location = new Point(236, 22);
             lblbusinessSeats.Margin = new Padding(5, 0, 5, 0);
             lblbusinessSeats.Name = "lblbusinessSeats";
             lblbusinessSeats.Size = new Size(79, 30);
@@ -488,7 +482,7 @@
             lblEngiinSeats.AutoSize = true;
             lblEngiinSeats.BackColor = SystemColors.ControlLight;
             lblEngiinSeats.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblEngiinSeats.Location = new Point(788, 346);
+            lblEngiinSeats.Location = new Point(236, 168);
             lblEngiinSeats.Margin = new Padding(5, 0, 5, 0);
             lblEngiinSeats.Name = "lblEngiinSeats";
             lblEngiinSeats.Size = new Size(82, 30);
@@ -506,14 +500,6 @@
             lblSuudalBatlah.Size = new Size(289, 32);
             lblSuudalBatlah.TabIndex = 46;
             lblSuudalBatlah.Text = "Суудал баталгаажуулах";
-            // 
-            // label2
-            // 
-            label2.Location = new Point(595, 197);
-            label2.Margin = new Padding(5, 0, 5, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(455, 501);
-            label2.TabIndex = 47;
             // 
             // btnSuudalConfirm
             // 
@@ -630,11 +616,56 @@
             flightNumComboBox.Size = new Size(242, 40);
             flightNumComboBox.TabIndex = 58;
             // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.ControlLight;
+            panel1.Controls.Add(LabelSeatsLoc);
+            panel1.Controls.Add(panel2);
+            panel1.Location = new Point(511, 143);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(653, 779);
+            panel1.TabIndex = 59;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = SystemColors.ButtonFace;
+            panel2.Controls.Add(BtnSeatB1);
+            panel2.Controls.Add(BtnSeatA6);
+            panel2.Controls.Add(lblEngiinSeats);
+            panel2.Controls.Add(BtnSeatB5);
+            panel2.Controls.Add(BtnSeatB6);
+            panel2.Controls.Add(btnSeatA1);
+            panel2.Controls.Add(BtnSeatA5);
+            panel2.Controls.Add(BtnSeatD1);
+            panel2.Controls.Add(lblbusinessSeats);
+            panel2.Controls.Add(BtnSeatC4);
+            panel2.Controls.Add(BtnSeatC2);
+            panel2.Controls.Add(BtnSeatC1);
+            panel2.Controls.Add(BtnSeatD4);
+            panel2.Controls.Add(BtnSeatD2);
+            panel2.Controls.Add(BtnSeatD3);
+            panel2.Controls.Add(BtnSeatB2);
+            panel2.Controls.Add(BtnSeatA3);
+            panel2.Controls.Add(BtnSeatC3);
+            panel2.Controls.Add(BtnSeatD6);
+            panel2.Controls.Add(BtnSeatB3);
+            panel2.Controls.Add(BtnSeatC6);
+            panel2.Controls.Add(BtnSeatA2);
+            panel2.Controls.Add(BtnSeatA4);
+            panel2.Controls.Add(BtnSeatC5);
+            panel2.Controls.Add(BtnSeatD5);
+            panel2.Controls.Add(BtnSeatB4);
+            panel2.Location = new Point(48, 54);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(564, 533);
+            panel2.TabIndex = 60;
+            // 
             // CheckInForm
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1628, 1037);
+            Controls.Add(panel1);
             Controls.Add(flightNumComboBox);
             Controls.Add(userLbl);
             Controls.Add(btnPrint);
@@ -647,33 +678,6 @@
             Controls.Add(passengerInfoGridView);
             Controls.Add(btnSuudalConfirm);
             Controls.Add(lblSuudalBatlah);
-            Controls.Add(lblEngiinSeats);
-            Controls.Add(lblbusinessSeats);
-            Controls.Add(LabelSeatsLoc);
-            Controls.Add(BtnSeatD6);
-            Controls.Add(BtnSeatD5);
-            Controls.Add(BtnSeatC5);
-            Controls.Add(BtnSeatC6);
-            Controls.Add(BtnSeatC3);
-            Controls.Add(BtnSeatD3);
-            Controls.Add(BtnSeatD4);
-            Controls.Add(BtnSeatC4);
-            Controls.Add(BtnSeatA5);
-            Controls.Add(BtnSeatB5);
-            Controls.Add(BtnSeatA6);
-            Controls.Add(BtnSeatB6);
-            Controls.Add(BtnSeatD1);
-            Controls.Add(BtnSeatC2);
-            Controls.Add(BtnSeatD2);
-            Controls.Add(BtnSeatA3);
-            Controls.Add(BtnSeatB3);
-            Controls.Add(BtnSeatA4);
-            Controls.Add(BtnSeatB4);
-            Controls.Add(BtnSeatB1);
-            Controls.Add(BtnSeatA2);
-            Controls.Add(BtnSeatB2);
-            Controls.Add(BtnSeatC1);
-            Controls.Add(btnSeatA1);
             Controls.Add(btnPasswordSearch);
             Controls.Add(passportNumTxtBx);
             Controls.Add(labelBG4);
@@ -685,14 +689,16 @@
             Controls.Add(lbldate);
             Controls.Add(lblNislegNumber);
             Controls.Add(appbar);
-            Controls.Add(label2);
-            Controls.Add(labelback3);
             Margin = new Padding(5);
             Name = "CheckInForm";
             Text = "CheckInForm";
             Load += CheckInForm_Load;
             ((System.ComponentModel.ISupportInitialize)passengerInfoGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -708,7 +714,6 @@
         private Label lblUserSearch;
         private Label LblPasswordNumber;
         private Label labelBG4;
-        private Label labelback3;
         private TextBox passportNumTxtBx;
         private Button btnPasswordSearch;
         private Button btnSeatA1;
@@ -739,7 +744,6 @@
         private Label lblbusinessSeats;
         private Label lblEngiinSeats;
         private Label lblSuudalBatlah;
-        private Label label2;
         private Button btnSuudalConfirm;
         private DataGridView passengerInfoGridView;
         private Label lblUserInfo;
@@ -751,5 +755,7 @@
         private Button btnPrint;
         private Label userLbl;
         private ComboBox flightNumComboBox;
+        private Panel panel1;
+        private Panel panel2;
     }
 }

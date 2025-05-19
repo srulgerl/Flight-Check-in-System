@@ -30,6 +30,7 @@ namespace WinForms.Forms
         private string passengerName;
         private string flightNumber;
         private string seatNumber;
+        private int _currentPassengerId;
 
         public CheckInForm(ICheckInService checkInService, IPassengerRepository passengerRepository, IFlightRepository flightRepository)
         {
@@ -68,19 +69,30 @@ namespace WinForms.Forms
             this.Close();
         }
 
-        private void btnSeatA1_Click(object sender, EventArgs e)
-        {
-            Button clickedSeat = sender as Button;
+        //private async Task SeatBtn_Click(object sender, EventArgs e)
+        //{
+         
+        //    if (sender is not Button btn || _currentPassengerId == null)
+        //    {
+        //        return;
+        //    }
 
-            if (clickedSeat.BackColor == Color.Red)
-            {
-                MessageBox.Show("Энэ суудал аль хэдийн захиалагдсан байна.");
-                return;
-            }
+        //    int seatId = (int)btn.Tag;
+        //    var passenger = await _passengerRepository.GetPassengerByIdAsync(_currentPassengerId);
+        //    if (passenger == null)
+        //    {
+        //        MessageBox.Show("Passenger not found.");
+        //        return;
+        //    }
+        //    bool success = await _checkInService.CheckInPassengerAsync(passenger.PassportNumber, passenger.PassportNumber, seatId);
 
-            // Өнгө өөрчлөх
-            clickedSeat.BackColor = Color.Red;
-        }
+        //    MessageBox.Show(success ? "Check-in successful!" : "Check-in failed.");
+        //    if (success)
+        //    {
+        //        btn.Enabled = false;
+        //        btn.BackColor = Color.Green;
+        //    }
+        //}
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
@@ -114,6 +126,8 @@ namespace WinForms.Forms
 
             string passportNumber = passportNumTxtBx.Text.Trim();
 
+         
+
             if (string.IsNullOrEmpty(passportNumber))
             {
                 MessageBox.Show("Паспортын дугаараа оруулна уу.");
@@ -138,12 +152,12 @@ namespace WinForms.Forms
                     }
             };
             passengerInfoGridView.DataSource = displayPassenger;
-            MessageBox.Show($"{passenger.FirstName} oldson");
+            _currentPassengerId = passenger.PassengerId;
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
-
+            
         }
     }
 }

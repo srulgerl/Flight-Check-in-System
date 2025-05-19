@@ -14,6 +14,7 @@ namespace Data.Repositories
         Task<List<Passenger>> GetPassengersByFlightIdAsync(int flightId);
         Task<Passenger> GetPassengerByFlightIdAsync(int flightId);
         Task<Passenger> GetPassengerByPassportAndFlightAsync(string passportNumber, int flightId);
+        Task<Passenger> GetPassengerByIdAsync(int passengerId);
 
     }
 }

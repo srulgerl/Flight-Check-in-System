@@ -117,4 +117,26 @@ public class PassengerRepository : AbsRepository, IPassengerRepository
         }
         return null;
     }
+
+    public async Task<Passenger> GetPassengerByIdAsync(int passengerId)
+    {
+        await using var db = CreateConnection();
+        await db.OpenAsync();
+        await using var cmd = db.CreateCommand();
+        cmd.CommandText = @"SELECT * FROM Passengers WHERE PassengerId = @PassengerId;";
+        cmd.Parameters.AddWithValue("@PassengerId", passengerId);
+        await using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            return new Passenger
+            {
+                PassengerId = reader.GetInt32(0),
+                PassportNumber = reader.GetString(1),
+                FirstName = reader.GetString(2),
+                LastName = reader.GetString(3),
+                FlightId = reader.GetInt32(4),
+            };
+        }
+        return null;
+    }
 }
