@@ -93,6 +93,7 @@
             appbar.Name = "appbar";
             appbar.Size = new Size(1005, 81);
             appbar.TabIndex = 0;
+            appbar.Click += appbar_Click;
             // 
             // lblNislegNumber
             // 
@@ -197,6 +198,7 @@
             btnSeatA1.TabIndex = 19;
             btnSeatA1.Text = "A1";
             btnSeatA1.UseVisualStyleBackColor = true;
+            btnSeatA1.Click += btnSeatA1_Click_1;
             // 
             // BtnSeatC1
             // 
@@ -224,6 +226,7 @@
             BtnSeatA2.TabIndex = 22;
             BtnSeatA2.Text = "A2";
             BtnSeatA2.UseVisualStyleBackColor = true;
+            BtnSeatA2.Click += BtnSeatA2_Click_1;
             // 
             // BtnSeatB1
             // 
@@ -584,6 +587,32 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(347, 333);
             panel2.TabIndex = 60;
+            this.btnSeatA1.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatA2.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatA3.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatA4.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatA5.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatA6.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatB1.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatB2.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatB3.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatB4.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatB5.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatB6.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatC1.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatC2.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatC3.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatC4.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatC5.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatC6.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatD1.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatD2.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatD3.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatD4.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatD5.Click += new System.EventHandler(this.SeatButton_Click);
+            this.BtnSeatD6.Click += new System.EventHandler(this.SeatButton_Click);
+
+
             // 
             // listView1
             // 
@@ -601,6 +630,7 @@
             panelSeatConfirm.Name = "panelSeatConfirm";
             panelSeatConfirm.Size = new Size(250, 217);
             panelSeatConfirm.TabIndex = 61;
+            panelSeatConfirm.Visible = false;
             // 
             // lblSeatConfirm
             // 
@@ -706,5 +736,6 @@
         private ListView listView1;
         private Panel panelSeatConfirm;
         private Label lblSeatConfirm;
+
     }
 }

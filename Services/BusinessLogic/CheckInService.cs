@@ -54,7 +54,15 @@ namespace Services.BusinessLogic
            };
            return await _boardingPassRepository.CreateAsync(boardingPass);
         }
-        
-       
+
+        public Task<bool> CheckInPassengerAsync(int currentPassengerId, int flightId, string? seatNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<string>> GetOccupiedSeatsAsync(int flightId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

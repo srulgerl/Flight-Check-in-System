@@ -31,6 +31,8 @@ namespace WinForms.Forms
         private string flightNumber;
         private string seatNumber;
         private int _currentPassengerId;
+        // Add a field to track if a passenger is found
+        private bool passengerFound = false;
 
         public CheckInForm(ICheckInService checkInService, IPassengerRepository passengerRepository, IFlightRepository flightRepository)
         {
@@ -152,6 +154,11 @@ namespace WinForms.Forms
             listView1.Items.Add(new ListViewItem(new[] { "Нислэгийн ID", flightId.ToString() }));
 
             _currentPassengerId = passenger.PassengerId;
+            passengerFound = true;
+            // else:
+            // passengerFound = false;
+            panelSeatConfirm.Visible = false;
+
         }
 
 
@@ -161,77 +168,34 @@ namespace WinForms.Forms
 
         }
 
-        private void btnSeatA1_Click(object sender, EventArgs e)
+
+        private void appbar_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void lblSeatConfirm_Click(object sender, EventArgs e)
+        private void SeatButton_Click(object sender, EventArgs e)
+        {
+            if (passengerFound)
+            {
+                // Show confirmation panel
+                panelSeatConfirm.Visible = true;
+                // Optionally update label with seat info
+                lblSeatConfirm.Text = $"Суудал: {((Button)sender).Text}";
+            }
+            else
+            {
+                // Optionally show a message: "Зорчигчийг эхлээд хайна уу"
+                MessageBox.Show("Эхлээд зорчигчийг хайна уу.");
+            }
+        }
+
+        private void btnSeatA1_Click_1(object sender, EventArgs e)
         {
 
         }
 
-        private void panelSeatConfirm_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void BtnSeatB1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatB2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatB3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatB4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatB5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatB6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatA2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatA3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatA4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatA5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatA6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnSeatC1_Click(object sender, EventArgs e)
+        private void BtnSeatA2_Click_1(object sender, EventArgs e)
         {
 
         }
