@@ -46,6 +46,11 @@ namespace Data.Repositories
             return null;
         }
 
+        public Task GetSeatsByFlightId(string v)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Seat>> GetSeatsByFlightIdAsync(string flightId)
         {
             List<Seat> seats = new List<Seat>();

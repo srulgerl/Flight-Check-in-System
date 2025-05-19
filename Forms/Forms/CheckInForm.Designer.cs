@@ -71,7 +71,7 @@
             lblUserInfo = new Label();
             btnSuudalCancel = new Button();
             label3 = new Label();
-            comboBox1 = new ComboBox();
+            Tolow = new ComboBox();
             btnChangeTolow = new Button();
             btnPrint = new Button();
             userLbl = new Label();
@@ -483,6 +483,7 @@
             btnSuudalConfirm.TabIndex = 48;
             btnSuudalConfirm.Text = "Баталгаажуулах";
             btnSuudalConfirm.UseVisualStyleBackColor = false;
+            btnSuudalConfirm.Click += btnSuudalConfirm_Click;
             // 
             // lblUserInfo
             // 
@@ -503,6 +504,7 @@
             btnSuudalCancel.TabIndex = 52;
             btnSuudalCancel.Text = "Цуцлах";
             btnSuudalCancel.UseVisualStyleBackColor = false;
+            btnSuudalCancel.Click += btnSuudalCancel_Click;
             // 
             // label3
             // 
@@ -514,14 +516,15 @@
             label3.TabIndex = 53;
             label3.Text = "   Нислэгийн төлөв";
             // 
-            // comboBox1
+            // Tolow
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Бүртгэж байна", "Онгоцонд сууж байна", "Ниссэн", "Хойшилсон", "Цуцалсан" });
-            comboBox1.Location = new Point(736, 430);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
-            comboBox1.TabIndex = 54;
+            Tolow.FormattingEnabled = true;
+            Tolow.Items.AddRange(new object[] { "Бүртгэж байна", "Онгоцонд сууж байна", "Ниссэн", "Хойшилсон", "Цуцалсан" });
+            Tolow.Location = new Point(736, 430);
+            Tolow.Name = "Tolow";
+            Tolow.Size = new Size(151, 28);
+            Tolow.TabIndex = 54;
+            Tolow.SelectedIndexChanged += Tolow_SelectedIndexChanged;
             // 
             // btnChangeTolow
             // 
@@ -531,6 +534,7 @@
             btnChangeTolow.TabIndex = 55;
             btnChangeTolow.Text = "Солих";
             btnChangeTolow.UseVisualStyleBackColor = true;
+            btnChangeTolow.Click += btnChangeTolow_Click;
             // 
             // btnPrint
             // 
@@ -649,7 +653,7 @@
             Controls.Add(userLbl);
             Controls.Add(btnPrint);
             Controls.Add(btnChangeTolow);
-            Controls.Add(comboBox1);
+            Controls.Add(Tolow);
             Controls.Add(label3);
             Controls.Add(btnSuudalCancel);
             Controls.Add(lblUserInfo);
@@ -723,7 +727,7 @@
         private Label lblUserInfo;
         private Button btnSuudalCancel;
         private Label label3;
-        private ComboBox comboBox1;
+        private ComboBox Tolow;
         private Button btnChangeTolow;
         private Button btnPrint;
         private Label userLbl;

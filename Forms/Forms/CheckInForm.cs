@@ -97,9 +97,6 @@ namespace WinForms.Forms
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            // Example: get bookingId from user selection or input
-            int bookingId = 1; // Replace with actual logic
-
             printDocument1 = new PrintDocument();
             printDocument1.PrintPage += printDocument1_PrintPage;
 
@@ -196,6 +193,83 @@ namespace WinForms.Forms
 
         private void panelSeatConfirm_Paint(object sender, PaintEventArgs e)
         {
+
+        }
+
+        private async void btnSuudalConfirm_Click(object sender, EventArgs e)
+        {
+            if (!passengerFound || _currentPassengerId == 0)
+            {
+                MessageBox.Show("Зорчигчийг эхлээд сонгоно уу.");
+                return;
+            }
+
+            // Get selected seat number from the confirmation label
+            string seatText = lblSeatConfirm.Text;
+            string seatNumber = seatText.Split('\n')[0].Replace("Суудал: ", "").Trim();
+
+            int flightId = (int)flightNumComboBox.SelectedValue;
+
+            // Confirm seat in the backend
+            bool checkInSuccess = await _checkInService.CheckInPassengerAsync(_currentPassengerId, flightId, seatNumber);
+
+            if (checkInSuccess)
+            {
+                // Update flight status to "CheckingIn"
+                await _flightRepository.UpdateFlightStatusAsync(flightId, FlightStatus.CheckingIn);
+
+                // Store details for printing
+                var passenger = await _passengerRepository.GetPassengerByIdAsync(_currentPassengerId);
+                var flight = await _flightRepository.GetByIdAsync(flightId);
+
+                passengerName = $"{passenger.LastName} {passenger.FirstName}";
+                flightNumber = flight.FlightNumber;
+                this.seatNumber = seatNumber;
+
+                MessageBox.Show("Суудал амжилттай баталгаажлаа!");
+
+                // Enable print button
+                btnPrint.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("Суудал баталгаажуулахад алдаа гарлаа.");
+            }
+        }
+
+        private void btnSuudalCancel_Click(object sender, EventArgs e)
+        {
+            // Hide the seat confirmation panel
+            panelSeatConfirm.Visible = false;
+
+            // Clear the seat confirmation label
+            lblSeatConfirm.Text = string.Empty;
+
+            // Clear the ListView with passenger info
+            listView1.Items.Clear();
+            listView1.Columns.Clear();
+
+            // Reset state variables
+            passengerFound = false;
+            _currentPassengerId = 0;
+            passengerName = string.Empty;
+            flightNumber = string.Empty;
+            seatNumber = string.Empty;
+
+            // Optionally, disable the print button
+            btnPrint.Enabled = false;
+        }
+
+
+
+        private void btnChangeTolow_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Tolow_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnPrint.Enabled = false;
 
         }
     }

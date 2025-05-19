@@ -12,5 +12,6 @@ namespace Data.Repositories
         Task<Seat> GetByIdAsync(int seatId);
         Task<List<Seat>> GetSeatsByFlightIdAsync(string flightId);
         Task<bool> AssignSeatAsync(int seatId);
+        Task GetSeatsByFlightId(string v);
     }
 }
