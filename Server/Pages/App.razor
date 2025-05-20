@@ -1,13 +1,12 @@
-﻿<h3>App</h3>
-
-@code {
-    // This is the main component of the Blazor application.
-    // It serves as the entry point for the application and can be used to set up routing, services, etc.
-    // You can add additional logic or components here as needed.
-    // For example, you might want to set up dependency injection, configure services, or initialize data.
-    // This is a placeholder for the main application component.
-    // You can add your own logic here to customize the behavior of the application.
-    // This is a placeholder for the main application component.
-
-}
-
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <ErrorBoundary>
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        </ErrorBoundary>
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>

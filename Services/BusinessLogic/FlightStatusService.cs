@@ -1,54 +1,43 @@
 ﻿using Data.Models;
 using Data.Repositories;
-using Services.BusinessLogic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Server.Hubs;
 
-namespace BusinessLogic
+namespace Services.BusinessLogic
 {
-    /// <summary>
-    /// Service for managing flight status
-    /// </summary>
-    public class FlightStatusService: IFlightService
+    public class FlightStatusService : IFlightService
     {
         private readonly IFlightRepository _flightRepository;
-        public FlightStatusService(IFlightRepository flightRepository)
+        private readonly IHubContext<FlightStatusHub> _hubContext;
+
+        // Constructor – repository болон SignalR context inject хийнэ
+        public FlightStatusService(IFlightRepository flightRepository, IHubContext<FlightStatusHub> hubContext)
         {
             _flightRepository = flightRepository;
+            _hubContext = hubContext;
         }
-        /// <summary>
-        /// Change flight status
-        /// </summary>
-        /// <param name="flightId"></param>
-        /// <param name="newStatus"></param>
-        /// <returns></returns>
-        public async Task<bool> ChangeFlightStatusAsync(int flightId , FlightStatus newStatus)
+
+        // Нислэгийн төлөв өөрчлөх
+        public async Task<bool> ChangeFlightStatusAsync(int flightId, FlightStatus newStatus)
         {
-            var flight = _flightRepository.GetByIdAsync(flightId);
+            var flight = await _flightRepository.GetByIdAsync(flightId);
             if (flight == null) return false;
 
             await _flightRepository.UpdateFlightStatusAsync(flightId, newStatus);
-            return true;
-                
 
+            // 🟢 Real-time мэдэгдэл клиент рүү дамжуулах
+            await _hubContext.Clients.All.SendAsync("FlightStatusChanged", flightId, newStatus.ToString());
+
+            return true;
         }
-        /// <summary>
-        /// Get all flights
-        /// </summary>
-        /// <returns></returns>
+
+        // Бүх нислэгүүдийг авах
         public async Task<List<Flight>> GetAllFlightsAsync()
         {
             return await _flightRepository.GetAllAsync();
         }
 
-        /// <summary>
-        /// Get flight by id
-        /// </summary>
-        /// <param name="flightId"></param>
-        /// <returns></returns>
+        // ID-р нислэг авах
         public async Task<Flight> GetFlightByIdAsync(int flightId)
         {
             return await _flightRepository.GetByIdAsync(flightId);

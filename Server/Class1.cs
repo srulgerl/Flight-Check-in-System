@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-// Other necessary using statements
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Server.Hubs; // Make sure this using is present
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-// For hosted WebAssembly, add:
-// builder.Services.AddControllersWithViews();
+builder.Services.AddControllers(); // For API controllers
+
+// Register your repositories and other services here
+// builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
 
 var app = builder.Build();
 
@@ -16,7 +19,6 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseWebAssemblyDebugging(); // For hosted WebAssembly
 }
 else
 {
@@ -25,15 +27,13 @@ else
 }
 
 app.UseHttpsRedirection();
-app.UseBlazorFrameworkFiles(); // For hosted WebAssembly
 app.UseStaticFiles();
 app.UseRouting();
 
 app.MapRazorPages();
-app.MapControllers(); // For hosted WebAssembly
-app.MapBlazorHub(); // For Blazor Server
-app.MapFallbackToPage("/_Host"); // For Blazor Server
-// OR for hosted WebAssembly:
-// app.MapFallbackToFile("index.html");
+app.MapControllers();
+app.MapBlazorHub();
+app.MapHub<FlightStatusHub>("/flightstatushub");     // ✨ Flight статус дамжуулах hub
+app.MapFallbackToPage("/_Host");
 
 app.Run();

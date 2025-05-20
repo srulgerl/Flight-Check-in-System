@@ -272,5 +272,10 @@ namespace WinForms.Forms
             btnPrint.Enabled = false;
 
         }
+
+        private void lblSeatConfirm_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

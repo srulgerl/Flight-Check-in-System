@@ -10,7 +10,7 @@ namespace Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PassengersContoller: ControllerBase
+    public class PassengersContoller : ControllerBase
     {
         private readonly IPassengerRepository _repo;
         public PassengersContoller(IPassengerRepository repo)
@@ -25,13 +25,13 @@ namespace Server.Controllers
             if (passenger == null) return NotFound();
             return Ok(passenger);
         }
+
         [HttpGet("by-flight/{flightId}")]
         public async Task<IActionResult> GetByFlight(int flightId)
         {
-            var passengers = await _repo.GetPassengersByFlghtIdAsync(flightId);
+            var passengers = await _repo.GetPassengersByFlightIdAsync(flightId); // Fix: Corrected method name to match the updated interface  
             if (passengers == null || !passengers.Any()) return NotFound();
             return Ok(passengers);
         }
-
     }
 }

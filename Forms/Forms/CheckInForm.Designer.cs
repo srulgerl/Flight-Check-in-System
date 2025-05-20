@@ -640,6 +640,7 @@
             lblSeatConfirm.Name = "lblSeatConfirm";
             lblSeatConfirm.Size = new Size(219, 190);
             lblSeatConfirm.TabIndex = 0;
+            lblSeatConfirm.Click += lblSeatConfirm_Click;
             // 
             // CheckInForm
             // 
