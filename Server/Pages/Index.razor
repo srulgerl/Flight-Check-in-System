@@ -1,0 +1,142 @@
+﻿@page "/"
+@using Services.BusinessLogic
+@using Data.Models
+@using Microsoft.AspNetCore.SignalR.Client
+@inject FlightStatusService FlightService
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
+
+<PageTitle>Нислэгийн мэдээлэл</PageTitle>
+
+<div class="display-board">
+    <h1>Нислэгийн мэдээллийн самбар</h1>
+    
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Нислэгийн дугаар</th>
+                    <th>Чиглэл</th>
+                    <th>Цаг</th>
+                    <th>Төлөв</th>
+                    <th>Гарц</th>
+                    <th>Бүртгэгдсэн зорчигч</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var flight in flights)
+                {
+                    <tr class="@GetRowClass(flight.Status)">
+                        <td>@flight.FlightNumber</td>
+                        <td>@flight.Departure</td>
+                        <td>@flight.DepartureDate.ToString("HH:mm")</td>
+                        <td>@GetStatusText(flight.Status)</td>
+                         @* <td>@flight.Gate</td> *@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<Flight> flights = new List<Flight>();
+    private HubConnection hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        flights = await FlightService.GetAllFlightsAsync();
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/flightstatushub"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<string, FlightStatus>("ReceiveFlightStatusUpdate", (flightNumber, status) =>
+        {
+            var flight = flights.FirstOrDefault(f => f.FlightNumber == flightNumber);
+            if (flight != null)
+            {
+                flight.Status = status;
+                StateHasChanged();
+            }
+        });
+
+
+        hubConnection.On<Flight>("ReceiveFlightUpdate", (updatedFlight) =>
+        {
+            var flight = flights.FirstOrDefault(f => f.FlightNumber == updatedFlight.FlightNumber);
+            if (flight != null)
+            {
+                int index = flights.IndexOf(flight);
+                flights[index] = updatedFlight;
+            }
+            else
+            {
+                flights.Add(updatedFlight);
+            }
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private string GetStatusText(FlightStatus status)
+    {
+        return status switch
+        {
+            FlightStatus.CheckingIn => "Бүртгэж байна",
+            FlightStatus.Boarding => "Онгоцонд сууж байна",
+            FlightStatus.Departed => "Ниссэн",
+            FlightStatus.Delayed => "Хойшилсон",
+            FlightStatus.Cancelled => "Цуцалсан",
+            _ => "Тодорхойгүй"
+        };
+    }
+
+    private string GetRowClass(FlightStatus status)
+    {
+        return status switch
+        {
+            FlightStatus.Delayed => "table-warning",
+            FlightStatus.Cancelled => "table-danger",
+            FlightStatus.Boarding => "table-info",
+            FlightStatus.Departed => "table-success",
+            _ => ""
+        };
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}
+
+@* // wwwroot/css/site.css - Add these styles *@
+@* .display-board { *@
+@*     padding: 20px; *@
+@*     background-color: #f8f9fa; *@
+@*     border-radius: 10px; *@
+@*     box-shadow: 0 4px 8px rgba(0,0,0,0.1); *@
+@*     margin: 20px auto; *@
+@*     max-width: 1200px; *@
+@* } *@
+
+@* .display-board h1 { *@
+@*     text-align: center; *@
+@*     margin-bottom: 20px; *@
+@*     color: #333; *@
+@* } *@
+
+@* .table-responsive { *@
+@*     margin-top: 20px; *@
+@* } *@
+
+@* .table th { *@
+@*     background-color: #343a40; *@
+@*     color: white; *@
+@*     font-weight: bold; *@
+@* } *@

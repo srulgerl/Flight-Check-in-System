@@ -1,18 +1,23 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Data.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Server.Hubs
 {
-    public class FlightStatusHub: Hub
+    public class FlightStatusHub : Hub
     {
-        public async Task UpdateFlightStatus(int flightId, string newStatus)
+        public async Task UpdateFlightStatus(string flightNumber, FlightStatus status)
         {
-            // Notify all clients about the flight status update
-            await Clients.All.SendAsync("FlightStatusChanged", flightId, newStatus);
+            await Clients.All.SendAsync("ReceiveFlightStatusUpdate", flightNumber, status);
+        }
+
+        public async Task UpdatePassengerCount(string flightNumber, int count)
+        {
+            await Clients.All.SendAsync("ReceivePassengerCountUpdate", flightNumber, count);
+        }
+
+        public async Task BroadcastFlightUpdates(Flight flight)
+        {
+            await Clients.All.SendAsync("ReceiveFlightUpdate", flight);
         }
     }
 }

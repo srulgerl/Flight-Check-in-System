@@ -20,11 +20,11 @@ namespace Data.Models
     }
     public enum FlightStatus
     {
-        CheckingIn = 0,  // Бүртгэж байна
-        Boarding = 1,    // Онгоцонд сууж байна
-        Departed = 2,    // Ниссэн
-        Delayed = 3,     // Хойшилсон
-        Cancelled = 4    // Цуцалсан
+        CheckingIn,       // Бүртгэж байна
+        Boarding,         // Онгоцонд сууж байна
+        Departed,         // Ниссэн
+        Delayed,          // Хойшилсон
+        Cancelled         // Цуцалсан
     }
-    
+
 }

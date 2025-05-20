@@ -98,7 +98,30 @@ namespace Data.Repositories
             await cmd.ExecuteNonQueryAsync();
         }
 
-        
+        public async Task<Flight> GetFlightByNumberAsync(string flightNumber)
+        {
+            await using var conn = CreateConnection();
+            await conn.OpenAsync();
+            await using var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT * Flight WHERE FlightNumber = @FlightNumber;";
+            cmd.Parameters.AddWithValue("@FlightNumber", flightNumber);
+            await using var reader = await cmd.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return new Flight
+                {
+                    FlightId = reader.GetInt32(0),
+                    FlightNumber = reader.GetString(1),
+                    Departure = reader.GetString(2),
+                    Arrival = reader.GetString(3),
+                    DepartureDate = reader.GetDateTime(4),
+                    ArrivalDate = reader.GetDateTime(5),
+                    Status = Enum.Parse<FlightStatus>(reader.GetString(6))
+                };
+            }
+            return null;
+        }
+
 
     }
 

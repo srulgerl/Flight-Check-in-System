@@ -1,39 +1,44 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Server.Hubs; // Make sure this using is present
+﻿using Data.Models;
+using Data.Repositories;
+using Microsoft.AspNetCore.ResponseCompression;
+using Server.Hubs;
+using Services.BusinessLogic;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddControllers(); // For API controllers
+//builder.Services.AddSingleton<FlightStatusService>();
+builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 
-// Register your repositories and other services here
-// builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
+// Add SignalR for real-time updates
+builder.Services.AddSignalR();
+
+// Add Response Compression for SignalR
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
+app.UseResponseCompression();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
 
-app.MapRazorPages();
-app.MapControllers();
 app.MapBlazorHub();
-app.MapHub<FlightStatusHub>("/flightstatushub");     // ✨ Flight статус дамжуулах hub
+app.MapHub<FlightStatusHub>("/flightstatushub");
 app.MapFallbackToPage("/_Host");
 
 app.Run();

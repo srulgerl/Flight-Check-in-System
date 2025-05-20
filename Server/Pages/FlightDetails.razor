@@ -1,0 +1,115 @@
+﻿@page "/flight/{FlightNumber}"
+@using Data.Models
+@using Services.BusinessLogic
+@using Microsoft.AspNetCore.SignalR.Client
+@inject FlightStatusService FlightService
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
+
+<PageTitle>Нислэгийн дэлгэрэнгүй мэдээлэл - @FlightNumber</PageTitle>
+
+<div class="container mt-4">
+    <h2>Нислэгийн дэлгэрэнгүй мэдээлэл</h2>
+    
+    @if (flight == null)
+    {
+        <p>Нислэгийн мэдээлэл ачаалж байна...</p>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3>@flight.FlightNumber - @flight.Departure</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Товлосон цаг:</strong> @flight.ArrivalDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        @* <p><strong>Гарц:</strong> @flight.Gate</p> *@
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Төлөв:</strong> <span class="@GetStatusBadgeClass()">@GetStatusText(flight.Status)</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="/" class="btn btn-secondary">Буцах</a>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string FlightNumber { get; set; }
+    
+    private Flight flight;
+    private HubConnection hubConnection;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        flight = await FlightService.GetFlightByNumberAsync(FlightNumber);
+        
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/flightstatushub"))
+            .WithAutomaticReconnect()
+            .Build();
+            
+        hubConnection.On<string, FlightStatus>("ReceiveFlightStatusUpdate", (flightNumber, status) =>
+        {
+            if (flightNumber == FlightNumber && flight != null)
+            {
+                flight.Status = status;
+                StateHasChanged();
+            }
+        });
+        
+     
+        
+        hubConnection.On<Flight>("ReceiveFlightUpdate", (updatedFlight) =>
+        {
+            if (updatedFlight.FlightNumber == FlightNumber)
+            {
+                flight = updatedFlight;
+                StateHasChanged();
+            }
+        });
+        
+        await hubConnection.StartAsync();
+    }
+    
+    private string GetStatusText(FlightStatus status)
+    {
+        return status switch
+        {
+            FlightStatus.CheckingIn => "Бүртгэж байна",
+            FlightStatus.Boarding => "Онгоцонд сууж байна",
+            FlightStatus.Departed => "Ниссэн",
+            FlightStatus.Delayed => "Хойшилсон",
+            FlightStatus.Cancelled => "Цуцалсан",
+            _ => "Тодорхойгүй"
+        };
+    }
+    
+    private string GetStatusBadgeClass()
+    {
+        return flight?.Status switch
+        {
+            FlightStatus.CheckingIn => "badge bg-secondary",
+            FlightStatus.Boarding => "badge bg-info",
+            FlightStatus.Departed => "badge bg-success",
+            FlightStatus.Delayed => "badge bg-warning",
+            FlightStatus.Cancelled => "badge bg-danger",
+            _ => "badge bg-secondary"
+        };
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

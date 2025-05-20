@@ -1,20 +1,19 @@
 ﻿using Data.Models;
 using Data.Repositories;
 using Microsoft.AspNetCore.SignalR;
-using Server.Hubs;
 
 namespace Services.BusinessLogic
 {
     public class FlightStatusService : IFlightService
     {
         private readonly IFlightRepository _flightRepository;
-        private readonly IHubContext<FlightStatusHub> _hubContext;
+        //private readonly IHubContext<FlightStatusHub> _hubContext;
 
         // Constructor – repository болон SignalR context inject хийнэ
-        public FlightStatusService(IFlightRepository flightRepository, IHubContext<FlightStatusHub> hubContext)
+        public FlightStatusService(IFlightRepository flightRepository)
         {
             _flightRepository = flightRepository;
-            _hubContext = hubContext;
+            //_hubContext = hubContext;
         }
 
         // Нислэгийн төлөв өөрчлөх
@@ -26,7 +25,7 @@ namespace Services.BusinessLogic
             await _flightRepository.UpdateFlightStatusAsync(flightId, newStatus);
 
             // 🟢 Real-time мэдэгдэл клиент рүү дамжуулах
-            await _hubContext.Clients.All.SendAsync("FlightStatusChanged", flightId, newStatus.ToString());
+            //await _hubContext.Clients.All.SendAsync("FlightStatusChanged", flightId, newStatus.ToString());
 
             return true;
         }
@@ -42,5 +41,11 @@ namespace Services.BusinessLogic
         {
             return await _flightRepository.GetByIdAsync(flightId);
         }
+
+        public async Task<Flight> GetFlightByNumberAsync(string flightNumber)
+        {
+            return await _flightRepository.GetFlightByNumberAsync(flightNumber);
+        }
+
     }
 }
