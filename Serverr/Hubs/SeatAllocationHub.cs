@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.Hubs
+namespace Web.Server.Hubs
 {
     public class SeatAllocationHub : Hub
     {

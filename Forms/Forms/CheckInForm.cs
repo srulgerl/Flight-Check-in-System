@@ -14,6 +14,7 @@ using System.Configuration;
 using Data.Models;
 using Data.Repositories;
 using Services.BusinessLogic;
+using WinForms.Services;
 
 
 namespace WinForms.Forms
@@ -27,6 +28,7 @@ namespace WinForms.Forms
         private PrintPreviewDialog printPreviewDialog1;
         private PrintDocument printDocument1;
 
+
         private string passengerName;
         private string flightNumber;
         private string seatNumber;
@@ -39,6 +41,7 @@ namespace WinForms.Forms
             _checkInService = checkInService;
             _passengerRepository = passengerRepository;
             _flightRepository = flightRepository;
+            _socketClient = new SocketClient();
             InitializeComponent();
             LoadFlightNumbers();
 
@@ -196,6 +199,8 @@ namespace WinForms.Forms
 
         }
 
+        private readonly SocketClient _socketClient = new SocketClient();
+
         private async void btnSuudalConfirm_Click(object sender, EventArgs e)
         {
             if (!passengerFound || _currentPassengerId == 0)
@@ -204,21 +209,44 @@ namespace WinForms.Forms
                 return;
             }
 
-            // Get selected seat number from the confirmation label
             string seatText = lblSeatConfirm.Text;
             string seatNumber = seatText.Split('\n')[0].Replace("Суудал: ", "").Trim();
-
             int flightId = (int)flightNumComboBox.SelectedValue;
 
-            // Confirm seat in the backend
-            bool checkInSuccess = await _checkInService.CheckInPassengerAsync(_currentPassengerId, flightId, seatNumber);
-
-            if (checkInSuccess)
+            // ✈️ 1. Socket холболт
+            bool connected = await _socketClient.ConnectAsync("localhost", 9000);
+            if (!connected)
             {
-                // Update flight status to "CheckingIn"
-                await _flightRepository.UpdateFlightStatusAsync(flightId, FlightStatus.CheckingIn);
+                MessageBox.Show("Сервертэй холбогдож чадсангүй.");
+                return;
+            }
 
-                // Store details for printing
+            // 📨 2. Захиалгын JSON бүрдүүлэлт
+            var payload = new
+            {
+                action = "reserveSeat",
+                flightId = flightId,
+                passengerId = _currentPassengerId,
+                seatNumber = seatNumber
+            };
+
+            string json = System.Text.Json.JsonSerializer.Serialize(payload);
+            await _socketClient.SendAsync(json);
+
+            // 📥 3. Серверийн хариуг авах
+            string? response = await _socketClient.ReceiveAsync();
+            if (response == null)
+            {
+                MessageBox.Show("Серверээс хариу ирсэнгүй.");
+                return;
+            }
+
+            // 📋 4. Хариуг унших
+            var result = System.Text.Json.JsonSerializer.Deserialize<SocketResponse>(response);
+            if (result?.status == "success")
+            {
+                MessageBox.Show(result.message);
+
                 var passenger = await _passengerRepository.GetPassengerByIdAsync(_currentPassengerId);
                 var flight = await _flightRepository.GetByIdAsync(flightId);
 
@@ -226,15 +254,21 @@ namespace WinForms.Forms
                 flightNumber = flight.FlightNumber;
                 this.seatNumber = seatNumber;
 
-                MessageBox.Show("Суудал амжилттай баталгаажлаа!");
-
-                // Enable print button
                 btnPrint.Enabled = true;
             }
             else
             {
-                MessageBox.Show("Суудал баталгаажуулахад алдаа гарлаа.");
+                MessageBox.Show(result?.message ?? "Алдаа гарлаа.");
             }
+
+            _socketClient.Disconnect();
+        }
+
+        // ✅ Дотоод туслах загвар
+        public class SocketResponse
+        {
+            public string status { get; set; } = "";
+            public string message { get; set; } = "";
         }
 
         private void btnSuudalCancel_Click(object sender, EventArgs e)

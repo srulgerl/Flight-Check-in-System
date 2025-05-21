@@ -103,7 +103,7 @@ namespace Data.Repositories
             await using var conn = CreateConnection();
             await conn.OpenAsync();
             await using var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT * Flight WHERE FlightNumber = @FlightNumber;";
+            cmd.CommandText = "SELECT * FROM Flight WHERE FlightNumber = @FlightNumber;";
             cmd.Parameters.AddWithValue("@FlightNumber", flightNumber);
             await using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
