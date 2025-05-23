@@ -1,20 +1,16 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Server.SocketServer;
 
-namespace Server.SocketServer
+
+namespace Web.Server
 {
     public class SocketBackgroundService : BackgroundService
     {
-        private readonly CheckInSocketServer _socketServer;
+        private readonly CheckInSocketServer _server;
+        public SocketBackgroundService(CheckInSocketServer server)
+            => _server = server;
 
-        public SocketBackgroundService(CheckInSocketServer socketServer)
-        {
-            _socketServer = socketServer;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            await _socketServer.StartAsync(stoppingToken);
-        }
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+            => _server.StartAsync(stoppingToken);
     }
+
 }

@@ -12,5 +12,6 @@ namespace Services.BusinessLogic
         Task<Flight> GetFlightByIdAsync(int flightId);
         Task<List<Flight>> GetAllFlightsAsync();
         Task<bool> ChangeFlightStatusAsync(int flightId, FlightStatus status);
+        Task UpdateFlightStatusAsync(int id, string status);
     }
 }

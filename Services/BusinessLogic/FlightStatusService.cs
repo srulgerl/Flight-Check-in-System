@@ -47,5 +47,9 @@ namespace Services.BusinessLogic
             return await _flightRepository.GetFlightByNumberAsync(flightNumber);
         }
 
+        public Task UpdateFlightStatusAsync(int id, string status)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

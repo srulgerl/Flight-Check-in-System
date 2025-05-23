@@ -27,33 +27,33 @@ namespace Services.BusinessLogic
         /// <param name="passportNumber"></param>
         /// <param name="seatId"></param>
         /// <returns></returns>
-        public async Task<bool> CheckInPassengerAsync(string flightId, string passportNumber, int seatId)
-        {
-            //var fli = await _passengerRepository.GetPassengersByFlghtIdAsync(flightNumber);  
-           var passenger = await _passengerRepository.GetPassengerByPassportAsync(passportNumber);
-           if (passenger == null)
-           {
-               return false;
-           }
-           var seat = await _seatRepository.GetByIdAsync(seatId);
-           if (seat == null || !seat.IsAssigned)
-           {
-               return false;
-           }
+        //public async Task<bool> CheckInPassengerAsync(int flightId, string passportNumber, int seatId)
+        //{
+        //    //var fli = await _passengerRepository.GetPassengersByFlghtIdAsync(flightNumber);  
+        //   var passenger = await _passengerRepository.GetPassengerByPassportAsync(passportNumber);
+        //   if (passenger == null)
+        //   {
+        //       return false;
+        //   }
+        //   var seat = await _seatRepository.GetByIdAsync(seatId);
+        //   if (seat == null || seat.IsAssigned)
+        //   {
+        //       return false;
+        //   }
           
-           var assigned = await _seatRepository.AssignSeatAsync(seatId);
-           if(!assigned) return false;
+        //   var assigned = await _seatRepository.AssignSeatAsync(seatId);
+        //   if(!assigned) return false;
 
           
-           var boardingPass = new BoardingPass
-           {
-               PassengerId = passenger.PassengerId,
-               FlightId = passenger.FlightId,
-               SeatId = seat.SeatId,
-               IssuedAt = DateTime.UtcNow
-           };
-           return await _boardingPassRepository.CreateAsync(boardingPass);
-        }
+        //   var boardingPass = new BoardingPass
+        //   {
+        //       PassengerId = passenger.PassengerId,
+        //       FlightId = passenger.FlightId,
+        //       SeatId = seat.SeatId,
+        //       IssuedAt = DateTime.UtcNow
+        //   };
+        //   return await _boardingPassRepository.CreateAsync(boardingPass);
+        //}
 
         public async Task<bool> CheckInPassengerAsync(int currentPassengerId, int flightId, string? seatNumber)
         {
@@ -91,6 +91,11 @@ namespace Services.BusinessLogic
                 Console.WriteLine($"Error during check-in: {ex.Message}");
                 return false;
             }
+        }
+
+        public Task<bool> CheckInPassengerAsync(string flightId, string passportNumber, int seatId)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<IEnumerable<string>> GetOccupiedSeatsAsync(int flightId)

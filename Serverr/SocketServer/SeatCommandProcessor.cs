@@ -1,9 +1,10 @@
 ﻿// Server/SocketServer/SeatCommandProcessor.cs
 using Services.BusinessLogic;
+using System.Net.Sockets;
 using System.Text.Json;
 
 
-namespace Server.SocketServer
+namespace Web.Server
 {
     public class SeatCommandProcessor
     {
@@ -44,6 +45,9 @@ namespace Server.SocketServer
                 return BuildError("Server error: " + ex.Message);
             }
         }
+        
+
+
 
         private string BuildSuccess(string message) =>
             JsonSerializer.Serialize(new { status = "success", message });

@@ -1,35 +1,82 @@
-// Server/Program.cs
+﻿// Server/Program.cs
 using Data.Repositories;
-using Server.SocketServer;
+
 using Services.BusinessLogic;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace Web.Server;
 
-// REST API + SignalR
-builder.Services.AddControllers();
-builder.Services.AddSignalR();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-// CORE services
-builder.Services.AddScoped<IFlightRepository, FlightRepository>();
-builder.Services.AddScoped<ICheckInService, CheckInService>();
-builder.Services.AddScoped<FlightStatusService>();
-builder.Services.AddScoped<SeatCommandProcessor>();
+        // Add services to the container  
+        builder.Services.AddSignalR();
+        ;
+        builder.Services.AddHostedService<Worker>();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
 
-// SocketServer (hosted service)
-builder.Services.AddSingleton<CheckInSocketServer>();
-builder.Services.AddHostedService<SocketBackgroundService>();
+            });
+        });
 
-var app = builder.Build();
+       
+        var connectionString =
+            builder.Configuration.GetConnectionString("DefaultConnection");
 
-app.UseSwagger();
-app.UseSwaggerUI();
+        // … (Controllers, SignalR, Swagger зэрэг бүртгэлүүд)
+        builder.Services.AddHostedService<Worker>();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
 
-app.UseRouting();
-app.UseAuthorization();
+            });
+        });
 
-app.MapControllers();
-app.MapHub<FlightStatusHub>("/flightHub");
+        // 2. Репозиторуудыг factory-ээр бүртгэх
+        builder.Services.AddScoped<IFlightRepository>(sp =>
+            new FlightRepository(connectionString));
+        builder.Services.AddScoped<IBoardingPassRepository>(sp =>
+            new BoardingPassRepository(connectionString));
+        builder.Services.AddScoped<IPassengerRepository>(sp =>
+            new PassengerRepository(connectionString));
+        builder.Services.AddScoped<ISeatRepository>(sp =>
+            new SeatRepository(connectionString));
 
-app.Run();
+        // 3. Бизнес логик болон бусад сервисүүд
+        builder.Services.AddScoped<IFlightService, FlightStatusService>();
+        builder.Services.AddScoped<ICheckInService, CheckInService>();
+        builder.Services.AddScoped<SeatCommandProcessor>();
+
+        // 4. SocketServer болон HostedService
+        builder.Services.AddSingleton<CheckInSocketServer>();
+        builder.Services.AddHostedService<SocketBackgroundService>();
+
+        var app = builder.Build();
+        // Configure the HTTP request pipeline  
+        app.UseCors("CorsPolicy");
+
+        //if (app.Environment.IsDevelopment())
+        //{
+        //    app.UseDeveloperExceptionPage();
+        //}
+        app.UseCors("CorsPolicy");
+
+        app.MapHub<FlightStatusHub>("/flightStatusHub");
+
+
+        app.Run();
+    }
+}

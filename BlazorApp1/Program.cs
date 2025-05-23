@@ -1,8 +1,7 @@
-using BlazorApp1.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace BlazorApp1;
+namespace BlazorApp15;
 public class Program
 {
     public static async Task Main(string[] args)
@@ -11,11 +10,9 @@ public class Program
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
-        builder.Services.AddScoped(sp => new HttpClient
-        {
-            BaseAddress = new Uri("https://localhost:5001")
-        });
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
         await builder.Build().RunAsync();
     }
 }
+    

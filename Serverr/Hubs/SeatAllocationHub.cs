@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web.Server.Hubs
-{
+namespace Web.Server;
     public class SeatAllocationHub : Hub
     {
         public async Task NotifySeatAllocatioln(int flightId, int seatId)
@@ -15,4 +14,4 @@ namespace Web.Server.Hubs
             await Clients.All.SendAsync("SeatTaken", flightId, seatId);
         }
     }
-}
+

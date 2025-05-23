@@ -1,4 +1,4 @@
-namespace Serverr
+namespace Web.Server
 {
     public class WeatherForecast
     {

@@ -1,8 +1,9 @@
 ﻿using System.Net.Sockets;
 using System.Text;
-using Server.SocketServer;
 
-namespace Server.SocketServer;
+
+namespace Web.Server;
+
 
 public class ClientHandler
 {
