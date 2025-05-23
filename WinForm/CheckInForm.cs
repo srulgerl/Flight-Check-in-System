@@ -15,7 +15,8 @@ using Data.Models;
 using Data.Repositories;
 using Services.BusinessLogic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using WinForms.Services;
+using WinForm.Services;
+using Serverr.SocketServer;
 
 
 namespace WinForm
@@ -42,7 +43,6 @@ namespace WinForm
             _checkInService = checkInService;
             _passengerRepository = passengerRepository;
             _flightRepository = flightRepository;
-            _socketClient = new SocketClient();
             InitializeComponent();
             LoadFlightNumbers();
 
@@ -200,7 +200,7 @@ namespace WinForm
 
         }
 
-        private readonly SocketClient _socketClient = new SocketClient();
+        private readonly WinForm.Services.SocketClient _socketClient = new WinForm.Services.SocketClient();
 
         private async void btnSuudalConfirm_Click(object sender, EventArgs e)
         {

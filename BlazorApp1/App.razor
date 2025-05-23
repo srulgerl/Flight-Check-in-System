@@ -1,10 +1,10 @@
-﻿<Router AppAssembly="@typeof(Program)">
+﻿<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
-    <NotFound>  
+    <NotFound>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p>Page not found</p>
+            <p>Хуудас олдсонгүй.</p>
         </LayoutView>
     </NotFound>
 </Router>

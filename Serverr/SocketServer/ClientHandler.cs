@@ -1,67 +1,84 @@
-﻿using System.Net.Sockets;
+﻿// File: Serverr/SocketServer/ClientHandler.cs
+using System;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using Web.Server;
 
-
-namespace Web.Server;
-
-
-public class ClientHandler
+namespace Serverr.SocketServer
 {
-    private readonly TcpClient _client;
-    private readonly NetworkStream _stream;
-    private readonly Func<string, Task> _broadcast;
-    private readonly SeatCommandProcessor _processor;
-
-    public bool IsConnected => _client.Connected;
-
-    public ClientHandler(TcpClient client, Func<string, Task> broadcast, SeatCommandProcessor processor)
+    public class ClientHandler
     {
-        _client = client;
-        _stream = _client.GetStream();
-        _broadcast = broadcast;
-        _processor = processor;
-    }
+        private readonly TcpClient _client;
+        private readonly NetworkStream _stream;
+        private readonly SeatCommandProcessor _processor;
+        private readonly ConcurrentDictionary<string, ClientHandler> _clients;
 
-    public async Task ProcessAsync()
-    {
-        var buffer = new byte[1024];
-        try
+        public ClientHandler(TcpClient client, SeatCommandProcessor processor, ConcurrentDictionary<string, ClientHandler> clients)
         {
-            while (_client.Connected)
+            _client = client;
+            _stream = client.GetStream();
+            _processor = processor;
+            _clients = clients;
+        }
+
+        public async Task HandleClientAsync(string clientId, CancellationToken token)
+        {
+            var buffer = new byte[1024];
+            try
             {
-                int byteCount = await _stream.ReadAsync(buffer);
-                if (byteCount == 0) break;
+                while (!token.IsCancellationRequested && _client.Connected)
+                {
+                    int byteCount = await _stream.ReadAsync(buffer.AsMemory(0, buffer.Length), token);
+                    if (byteCount == 0) break;
 
-                var message = Encoding.UTF8.GetString(buffer, 0, byteCount);
-                Console.WriteLine($"📥 Message from client: {message}");
+                    var message = Encoding.UTF8.GetString(buffer, 0, byteCount);
+                    Console.WriteLine($"📥 Received from {clientId}: {message}");
 
-                string response = await _processor.ProcessAsync(message);
-                await SendMessageAsync(response);
-                await _broadcast(response);
+                    var response = await _processor.ProcessAsync(message);
+                    await BroadcastAsync(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error [{clientId}]: {ex.Message}");
+            }
+            finally
+            {
+                Disconnect();
+                _clients.TryRemove(clientId, out _);
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"❌ Socket error: {ex.Message}");
-        }
-        finally
-        {
-            _stream.Close();
-            _client.Close();
-        }
-    }
 
-    public async Task SendMessageAsync(string message)
-    {
-        if (!_client.Connected) return;
-        var data = Encoding.UTF8.GetBytes(message);
-        try
+        private async Task BroadcastAsync(string message)
         {
-            await _stream.WriteAsync(data);
+            var data = Encoding.UTF8.GetBytes(message);
+            foreach (var kvp in _clients)
+            {
+                try
+                {
+                    if (kvp.Value != this && kvp.Value._client.Connected)
+                    {
+                        await kvp.Value._stream.WriteAsync(data);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"❌ Broadcast error to {kvp.Key}: {ex.Message}");
+                }
+            }
         }
-        catch (Exception ex)
+
+        public void Disconnect()
         {
-            Console.WriteLine($"❌ Error sending to client: {ex.Message}");
+            try
+            {
+                _stream?.Close();
+                _client?.Close();
+            }
+            catch { }
         }
     }
 }

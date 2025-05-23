@@ -1,16 +1,26 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿// File: Serverr/SocketServer/SocketBackgroundService.cs
+using Microsoft.Extensions.Hosting;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Text;
+using System.Net.Sockets;
+using System.IO;
 
-
-namespace Web.Server
+namespace Serverr.SocketServer
 {
     public class SocketBackgroundService : BackgroundService
     {
-        private readonly CheckInSocketServer _server;
-        public SocketBackgroundService(CheckInSocketServer server)
-            => _server = server;
+        private readonly CheckInSocketServer _socketServer;
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-            => _server.StartAsync(stoppingToken);
+        public SocketBackgroundService(CheckInSocketServer socketServer)
+        {
+            _socketServer = socketServer;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            await _socketServer.StartAsync(stoppingToken);
+        }
     }
-
+    
 }

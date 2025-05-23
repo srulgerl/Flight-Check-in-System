@@ -1,21 +1,30 @@
-﻿
-
+﻿// File: Serverr/Hubs/FlightStatusHub.cs
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Text.Json;
 
-namespace Web.Server;
-
-public class FlightStatusHub : Hub
+namespace Serverr.Hubs
 {
-    public async Task SendFlightStatus(string flightNumber, string status)
+    public class FlightStatusHub : Hub
     {
-        Console.WriteLine($"Flight {flightNumber} status: {status}");
-        await Clients.All.SendAsync("ReceiveFlightStatus", flightNumber, status);
-    }
+        private readonly ILogger<FlightStatusHub> _logger;
 
+        public FlightStatusHub(ILogger<FlightStatusHub> logger)
+        {
+            _logger = logger;
+        }
 
-    public override async Task OnConnectedAsync()
-    {
-        await Clients.Caller.SendAsync("ReceiveMessage", "System", "Connected to Flight Status Hub");
-        await base.OnConnectedAsync();
+        public async Task BroadcastFlightStatus(string flightId, string newStatus)
+        {
+            var payload = JsonSerializer.Serialize(new
+            {
+                FlightId = flightId,
+                Status = newStatus
+            });
+
+            _logger.LogInformation("📡 Broadcasting flight {FlightId} status: {Status}", flightId, newStatus);
+            await Clients.All.SendAsync("ReceiveFlightStatus", payload);
+        }
     }
 }

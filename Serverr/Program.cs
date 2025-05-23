@@ -1,82 +1,66 @@
-﻿// Server/Program.cs
+﻿// File: Server/Program.cs
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Data.Repositories;
-
 using Services.BusinessLogic;
+using Serverr.Hubs;
+using Serverr.SocketServer;
 
-namespace Web.Server;
-
-public class Program
+namespace Web.Server
 {
-    public static void Main(string[] args)
+    public class Program
     {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container  
-        builder.Services.AddSignalR();
-        ;
-        builder.Services.AddHostedService<Worker>();
-        builder.Services.AddCors(options =>
+        public static void Main(string[] args)
         {
-            options.AddPolicy("CorsPolicy", builder =>
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Configuration
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            // Core services
+            builder.Services.AddControllers();
+            builder.Services.AddSignalR();
+            builder.Services.AddCors(options =>
             {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
             });
-        });
 
-       
-        var connectionString =
-            builder.Configuration.GetConnectionString("DefaultConnection");
+            // Hosted background worker (optional if needed)
+            builder.Services.AddHostedService<Worker>();
 
-        // … (Controllers, SignalR, Swagger зэрэг бүртгэлүүд)
-        builder.Services.AddHostedService<Worker>();
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("CorsPolicy", builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+            // Socket + Seat command logic
+            builder.Services.AddScoped<SeatCommandProcessor>();
+            builder.Services.AddSingleton<CheckInSocketServer>();
+            builder.Services.AddHostedService<SocketBackgroundService>(); // must inherit from BackgroundService
 
-            });
-        });
+            // Repositories
+            builder.Services.AddScoped<IFlightRepository>(_ => new FlightRepository(connectionString));
+            builder.Services.AddScoped<IBoardingPassRepository>(_ => new BoardingPassRepository(connectionString));
+            builder.Services.AddScoped<IPassengerRepository>(_ => new PassengerRepository(connectionString));
+            builder.Services.AddScoped<ISeatRepository>(_ => new SeatRepository(connectionString));
 
-        // 2. Репозиторуудыг factory-ээр бүртгэх
-        builder.Services.AddScoped<IFlightRepository>(sp =>
-            new FlightRepository(connectionString));
-        builder.Services.AddScoped<IBoardingPassRepository>(sp =>
-            new BoardingPassRepository(connectionString));
-        builder.Services.AddScoped<IPassengerRepository>(sp =>
-            new PassengerRepository(connectionString));
-        builder.Services.AddScoped<ISeatRepository>(sp =>
-            new SeatRepository(connectionString));
+            // Business logic
+            builder.Services.AddScoped<IFlightService, FlightStatusService>();
+            builder.Services.AddScoped<ICheckInService, CheckInService>();
 
-        // 3. Бизнес логик болон бусад сервисүүд
-        builder.Services.AddScoped<IFlightService, FlightStatusService>();
-        builder.Services.AddScoped<ICheckInService, CheckInService>();
-        builder.Services.AddScoped<SeatCommandProcessor>();
+            var app = builder.Build();
 
-        // 4. SocketServer болон HostedService
-        builder.Services.AddSingleton<CheckInSocketServer>();
-        builder.Services.AddHostedService<SocketBackgroundService>();
+            // Middleware pipeline
+            app.UseCors("CorsPolicy");
+            app.MapControllers();
+            app.MapBlazorHub();
+            app.MapFallbackToPage("/_Host");
+            app.MapHub<FlightStatusHub>("/flightStatusHub");
+            app.MapHub<SeatAllocationHub>("/seatHub");
 
-        var app = builder.Build();
-        // Configure the HTTP request pipeline  
-        app.UseCors("CorsPolicy");
-
-        //if (app.Environment.IsDevelopment())
-        //{
-        //    app.UseDeveloperExceptionPage();
-        //}
-        app.UseCors("CorsPolicy");
-
-        app.MapHub<FlightStatusHub>("/flightStatusHub");
-
-
-        app.Run();
+            app.Run();
+        }
     }
 }

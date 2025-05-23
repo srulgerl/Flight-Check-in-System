@@ -1,14 +1,20 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-namespace Web.Server
+namespace Serverr.SocketServer
 {
     public class CheckInSocketServer
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<CheckInSocketServer> _logger;
         private readonly TcpListener _listener;
+        private bool _isRunning = false;
 
         public CheckInSocketServer(IServiceScopeFactory scopeFactory,
                                    ILogger<CheckInSocketServer> logger,
@@ -17,17 +23,30 @@ namespace Web.Server
             _scopeFactory = scopeFactory;
             _logger = logger;
             _listener = new TcpListener(IPAddress.Any, port);
-            _listener.Start();
-            _logger.LogInformation($"Socket server listening on port {port}");
         }
 
         public async Task StartAsync(CancellationToken ct)
         {
+            _listener.Start();
+            _isRunning = true;
+            _logger.LogInformation("✅ Socket server started on port {Port}", ((IPEndPoint)_listener.LocalEndpoint).Port);
+
             while (!ct.IsCancellationRequested)
             {
-                // Хүлээгдэж буй клиент холболтыг авах
-                var client = await _listener.AcceptTcpClientAsync(ct);
-                _ = HandleClientAsync(client, ct);
+                try
+                {
+                    var client = await _listener.AcceptTcpClientAsync(ct);
+                    _logger.LogInformation("🔌 Client connected: {Client}", client.Client.RemoteEndPoint);
+                    _ = HandleClientAsync(client, ct);
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "⚠️ Error accepting client connection");
+                }
             }
         }
 
@@ -40,29 +59,33 @@ namespace Web.Server
                 {
                     while (!ct.IsCancellationRequested)
                     {
-                        // Мессеж унших
                         var message = await ReceiveMessageAsync(stream, ct);
-                        if (message == null) break;  // Клиент холбогдолтоо тасалсан
+                        if (message == null) break;
 
-                        // Шинэ DI scope үүсгэж, процессороо дуудаж
                         using var scope = _scopeFactory.CreateScope();
-                        var processor = scope.ServiceProvider
-                                             .GetRequiredService<SeatCommandProcessor>();
-                        var response = await processor.ProcessAsync(message);
+                        var processor = scope.ServiceProvider.GetService<SeatCommandProcessor>();
+                        if (processor == null)
+                        {
+                            _logger.LogWarning("⚠️ SeatCommandProcessor not resolved.");
+                            break;
+                        }
 
-                        // Үр дүнг буцаах
+                        var response = await processor.ProcessAsync(message);
                         await SendMessageAsync(stream, response, ct);
                     }
                 }
                 catch (OperationCanceledException) { }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error handling socket client");
+                    _logger.LogError(ex, "❌ Error handling socket client");
+                }
+                finally
+                {
+                    _logger.LogInformation("🔌 Client disconnected: {Client}", client.Client.RemoteEndPoint);
                 }
             }
         }
 
-        // 1) Stream-аас '\n' хүртэлх JSON текстийг уншиж буцаана
         private async Task<string?> ReceiveMessageAsync(NetworkStream stream, CancellationToken ct)
         {
             var sb = new StringBuilder();
@@ -71,26 +94,30 @@ namespace Web.Server
             while (!ct.IsCancellationRequested)
             {
                 int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
-                if (bytesRead == 0)
-                    return null; // холболт тасарсан
+                if (bytesRead == 0) return null;
 
                 sb.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
-
-                // Newline-өөр төгсгөл мэдэгдэж байвал уншиж дуусав
-                if (sb.Length > 0 && sb[^1] == '\n')
-                    break;
+                if (sb[^1] == '\n') break;
             }
 
-            // Newline болон carriage return-ыг тайрч үлдсэнийг буцаана
             return sb.ToString().TrimEnd('\r', '\n');
         }
 
-        // 2) Stream рүү JSON хариуг '\n'-тэйгээр илгээдэг
         private async Task SendMessageAsync(NetworkStream stream, string message, CancellationToken ct)
         {
             var bytes = Encoding.UTF8.GetBytes(message + "\n");
             await stream.WriteAsync(bytes, 0, bytes.Length, ct);
             await stream.FlushAsync(ct);
+        }
+
+        public void Stop()
+        {
+            if (_isRunning)
+            {
+                _listener.Stop();
+                _isRunning = false;
+                _logger.LogInformation("🛑 Socket server stopped");
+            }
         }
     }
 }

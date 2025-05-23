@@ -1,41 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// File: Serverr/Controllers/FlightsController.cs
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Services.BusinessLogic;
+using Serverr.Hubs;
+using System.Text.Json;
 
-namespace Web.Server;
-
-[ApiController]
-[Route("api/[controller]")]
-public class FlightsController : ControllerBase
+namespace Serverr.Controllers
 {
-    private readonly IHubContext<FlightStatusHub> _hubContext;
-    // Датабазтай холбогдох сервис (жишээ нь)
-    private readonly IFlightService _flightService;
-
-    public FlightsController(IHubContext<FlightStatusHub> hubContext, IFlightService flightService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class FlightsController : ControllerBase
     {
-        _hubContext = hubContext;
-        _flightService = flightService;
-    }
+        private readonly IHubContext<FlightStatusHub> _hubContext;
+        private readonly IFlightService _flightService;
 
-    // GET: api/flights
-    [HttpGet]
-    public async Task<IActionResult> GetFlights()
-    {
-        var flights = await _flightService.GetAllFlightsAsync();
-        return Ok(flights);
-    }
+        public FlightsController(IHubContext<FlightStatusHub> hubContext, IFlightService flightService)
+        {
+            _hubContext = hubContext;
+            _flightService = flightService;
+        }
 
-    // PUT: api/flights/5/status
-    [HttpPut("{id}/status")]
-    public async Task<IActionResult> UpdateFlightStatus(int id, [FromBody] string status)
-    {
-        // Нислэгийн төлөвийг өөрчлөх
-        await _flightService.UpdateFlightStatusAsync(id, status);
+        // GET: api/flights
+        [HttpGet]
+        public async Task<IActionResult> GetFlights()
+        {
+            var flights = await _flightService.GetAllFlightsAsync();
+            return Ok(flights);
+        }
 
-        // SignalR ашиглан клиентүүдэд өөрчлөлтийг мэдэгдэх
-        await _hubContext.Clients.All.SendAsync("FlightStatusChanged", id, status);
+        // PUT: api/flights/{id}/status
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateFlightStatus(int id, [FromBody] string status)
+        {
+            await _flightService.UpdateFlightStatusAsync(id, status);
 
-        return NoContent();
+            var payload = JsonSerializer.Serialize(new
+            {
+                FlightId = id.ToString(),
+                Status = status
+            });
+
+            await _hubContext.Clients.All.SendAsync("ReceiveFlightStatus", payload);
+
+            return NoContent();
+        }
     }
 }

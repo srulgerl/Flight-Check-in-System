@@ -1,70 +1,119 @@
-﻿@* @page "/flights" *@
-@* @inject HttpClient Http *@
-@* @inject SignalRClient SignalR *@
+﻿// File: BlazorApp1/Components/Pages/FlightDisplay.razor
+@page "/flights"
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.SignalR.Client
+@using System.Text.Json
+@implements IDisposable
 
-@* <h3>✈ Нислэгийн мэдээлэл</h3> *@
+<h3>Нислэгийн мэдээлэл</h3>
+<ul>
+    @foreach (var update in updates)
+    {
+        <li>@update</li>
+    }
+</ul>
 
-@* @if (flights == null) *@
-@* { *@
-@*     <p>Уншиж байна...</p> *@
-@* } *@
-@* else *@
-@* { *@
-@*     <table class="table table-bordered"> *@
-@*         <thead> *@
-@*             <tr> *@
-@*                 <th>Flight Number</th> *@
-@*                 <th>Departure</th> *@
-@*                 <th>Arrival</th> *@
-@*                 <th>Departure Time</th> *@
-@*                 <th>Arrival Time</th> *@
-@*                 <th>Status</th> *@
-@*             </tr> *@
-@*         </thead> *@
-@*         <tbody> *@
-@*             @foreach (var flight in flights) *@
-@*             { *@
-@*                 <tr> *@
-@*                     <td>@flight.FlightNumber</td> *@
-@*                     <td>@flight.Departure</td> *@
-@*                     <td>@flight.Arrival</td> *@
-@*                     <td>@flight.DepartureDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td> *@
-@*                     <td>@flight.ArrivalDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td> *@
-@*                     <td>@flight.Status</td> *@
-@*                 </tr> *@
-@*             } *@
-@*         </tbody> *@
-@*     </table> *@
-@* } *@
+<h3>Нислэгийн төлөв</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Flight ID</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var flight in flightStatuses)
+        {
+            <tr>
+                <td>@flight.FlightId</td>
+                <td>
+                    @if (flight.Status == "Ниссэн")
+                    {
+                        <span style="color: green; font-weight: bold">🛫 @flight.Status</span>
+                    }
+                    else if (flight.Status == "Онгоцонд сууж байна")
+                    {
+                        <span style="color: blue; font-weight: bold">🧍‍♂️ @flight.Status</span>
+                    }
+                    else if (flight.Status == "Хойшилсон")
+                    {
+                        <span style="color: orange; font-weight: bold">⏳ @flight.Status</span>
+                    }
+                    else if (flight.Status == "Цуцалсан")
+                    {
+                        <span style="color: red; font-weight: bold">❌ @flight.Status</span>
+                    }
+                    else if (flight.Status == "Бүртгэж байна")
+                    {
+                        <span style="color: darkcyan; font-weight: bold">📝 @flight.Status</span>
+                    }
+                    else
+                    {
+                        <span style="font-weight: bold">@flight.Status</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-@* @code { *@
-@*     private List<Flight>? flights; *@
+@code {
+    private HubConnection? hubConnection;
+    private List<string> updates = new();
+    private List<FlightStatusModel> flightStatuses = new();
 
-@*     protected override async Task OnInitializedAsync() *@
-@*     { *@
-@*         SignalR.OnFlightStatusChanged += HandleFlightStatusChanged; *@
-@*         await SignalR.StartAsync("https://localhost:5001/flightHub"); *@
-@*         flights = await Http.GetFromJsonAsync<List<Flight>>("api/flights"); *@
-@*     } *@
+    private class FlightStatusModel
+    {
+        public string FlightId { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+    }
 
-@*     private void HandleFlightStatusChanged(int flightId, string status) *@
-@*     { *@
-@*         var flight = flights?.FirstOrDefault(f => f.FlightId == flightId); *@
-@*         if (flight != null) *@
-@*         { *@
-@*             flight.Status = status; *@
-@*             InvokeAsync(StateHasChanged); *@
-@*         } *@
-@*     } *@
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/seatHub"))
+            .WithAutomaticReconnect()
+            .Build();
 
-@*     public class Flight *@
-@*     { *@
-@*         public int FlightId { get; set; } *@
-@*         public string FlightNumber { get; set; } = ""; *@
-@*         public string Departure { get; set; } = ""; *@
-@*         public string Arrival { get; set; } = ""; *@
-@*         public DateTime DepartureDate { get; set; } *@
-@*         public DateTime ArrivalDate { get; set; } *@
-@*         public string Status { get; set; } = ""; *@
-@*     } *@
-@* } *@
+        hubConnection.On<string>("ReceiveSeatUpdate", (message) =>
+        {
+            updates.Insert(0, message);
+            StateHasChanged();
+        });
+
+        hubConnection.On<string>("ReceiveFlightStatus", (json) =>
+        {
+            try
+            {
+                var data = JsonSerializer.Deserialize<FlightStatusModel>(json);
+                if (data != null)
+                {
+                    var index = flightStatuses.FindIndex(f => f.FlightId == data.FlightId);
+                    if (index >= 0)
+                    {
+                        flightStatuses[index] = data;
+                    }
+                    else
+                    {
+                        flightStatuses.Insert(0, data);
+                    }
+                    StateHasChanged();
+                }
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"❌ JSON Parse Error: {ex.Message}");
+            }
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    public async void Dispose()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

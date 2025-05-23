@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Web.Server;
+namespace Serverr.Hubs
+{
     public class SeatAllocationHub : Hub
     {
-        public async Task NotifySeatAllocatioln(int flightId, int seatId)
+        public async Task BroadcastSeatUpdate(string message)
         {
-            // Notify all connected clients about the seat allocation
-            await Clients.All.SendAsync("SeatTaken", flightId, seatId);
+            await Clients.All.SendAsync("ReceiveSeatUpdate", message);
         }
     }
-
+}
